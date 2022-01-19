@@ -17,19 +17,51 @@ class FloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        FloatingActionButton(
-          child: const Icon(Icons.info),
-          onPressed: onPressedInfo,
-        ),
-        FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: onPressed,
-        ),
-        FloatingActionButton(
-          child: const Icon(Icons.delete),
-          onPressed: onPressedDelete,
+        Wrap(
+          children: <Widget>[
+            RawMaterialButton(
+              autofocus: false,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onPressed: onPressedInfo,
+              elevation: 2.0,
+              fillColor: Theme.of(context).buttonColor,
+              child: const Icon(
+                Icons.info_outline,
+                size: 35.0,
+              ),
+              padding: const EdgeInsets.all(15.0),
+              shape: const CircleBorder(),
+            ),
+            RawMaterialButton(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onPressed: onPressed,
+              elevation: 2.0,
+              fillColor: Theme.of(context).buttonColor,
+              child: const Icon(
+                Icons.add,
+                size: 35.0,
+              ),
+              padding: const EdgeInsets.all(15.0),
+              shape: const CircleBorder(),
+            ),
+            RawMaterialButton(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              fillColor: Theme.of(context).buttonColor,
+              onPressed: onPressedDelete,
+              elevation: 2.0,
+              child: const Icon(
+                Icons.delete,
+                size: 35.0,
+              ),
+              padding: const EdgeInsets.all(15.0),
+              shape: const CircleBorder(),
+            )
+          ],
         ),
       ],
     );

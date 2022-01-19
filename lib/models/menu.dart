@@ -5,6 +5,7 @@ class Menu extends StatefulWidget {
   final void Function(bool value) onChangeTheme;
   final bool isLightTheme;
 
+
   const Menu({
     Key? key,
     required this.isLightTheme,
@@ -35,7 +36,16 @@ class _MenuState extends State<Menu> {
               );
             },
           ),
-
+        ),
+        PopupMenuItem(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return const Text('Como usar?');
+            },
+          ),
         ),
       ],
     );

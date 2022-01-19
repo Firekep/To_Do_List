@@ -18,9 +18,9 @@ class SlideSwitch extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        if(text != null)
-          Container(
-            child: Text(text!),
+        if (text != null)
+          Text(
+            text!,
           ),
         Switch(
           value: value,

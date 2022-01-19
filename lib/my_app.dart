@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:to_do_list/screens/app_home.dart';
+import 'package:to_do_list/screens/listview.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -26,9 +27,17 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
+            primaryColorLight: Colors.white,
+            backgroundColor: Colors.redAccent,
+            iconTheme: const IconThemeData(color: Colors.white),
             primaryColor: Colors.black,
-            appBarTheme:
-                const AppBarTheme(backgroundColor: Color.fromRGBO(155, 22, 61, 1)),
+            buttonColor: const Color.fromRGBO(155, 22, 61, 1),
+            focusColor: Colors.transparent,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Color.fromRGBO(155, 22, 61, 1),
+              systemOverlayStyle:
+                  SystemUiOverlayStyle(statusBarColor: Colors.black87),
+            ),
             primarySwatch: Colors.teal,
             colorScheme: ColorScheme.fromSwatch().copyWith(
               secondary: const Color.fromRGBO(209, 36, 113, 1),
@@ -56,13 +65,20 @@ class _MyAppState extends State<MyApp> {
           ),
           darkTheme: ThemeData(
             primaryColorLight: Colors.white,
+            buttonColor: Colors.black,
+            focusColor: Colors.transparent,
+            iconTheme: const IconThemeData(color: Colors.white),
             dialogTheme: DialogTheme(
               backgroundColor: Colors.grey[800],
-              titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
+              titleTextStyle:
+                  const TextStyle(color: Colors.white, fontSize: 20),
             ),
             primaryColor: Colors.white,
-            appBarTheme: const AppBarTheme(backgroundColor: Colors.black54),
-            primarySwatch: Colors.red,
+            appBarTheme: const AppBarTheme(
+                backgroundColor: Colors.black,
+                systemOverlayStyle:
+                    SystemUiOverlayStyle(statusBarColor: Colors.black87)),
+            primarySwatch: Colors.blue,
             scaffoldBackgroundColor: Colors.grey,
             colorScheme: ColorScheme.fromSwatch().copyWith(
               secondary: Colors.black54,
@@ -82,19 +98,18 @@ class _MyAppState extends State<MyApp> {
                 color: Colors.white,
               ),
               enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
+                borderSide: BorderSide(
+                  color: Colors.white,
+                ),
               ),
             ),
             textTheme: const TextTheme(
-              bodyText2: TextStyle(
-                color: Colors.white,
-              ),
-              bodyText1: TextStyle(
-                color: Colors.white,
-              )
-            ),
+                bodyText2: TextStyle(
+                  color: Colors.white,
+                ),
+                bodyText1: TextStyle(
+                  color: Colors.white,
+                )),
           ),
           themeMode: mode,
           // Decides which theme to show, light or dark.
@@ -138,6 +153,5 @@ class _MyAppState extends State<MyApp> {
       }
     });
   }
-
 }
 //      notifier.value = theme == true ? ThemeMode.dark : ThemeMode.light;
