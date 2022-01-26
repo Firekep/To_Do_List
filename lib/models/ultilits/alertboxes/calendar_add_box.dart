@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_list/models/input.dart';
+import 'package:to_do_list/models/ultilits/inputs/input.dart';
 
-import '../calendar_items.dart';
+import '../../calendar_items.dart';
 
 class CalendarAdd extends StatefulWidget {
   const CalendarAdd({Key? key}) : super(key: key);
@@ -32,18 +32,24 @@ class _CalendarAddState extends State<CalendarAdd> {
         ],
       ),
       actions: <Widget>[
-        FlatButton(
+        OutlinedButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text(
             'Cancelar',
             style: TextStyle(color: Colors.red),
           ),
+          style: OutlinedButton.styleFrom(
+            side: const BorderSide(color: Colors.transparent),
+          ),
         ),
-        FlatButton(
+        OutlinedButton(
           onPressed: () => _submit(),
           child: const Text(
             'Salvar',
             style: TextStyle(color: Colors.green),
+          ),
+          style: OutlinedButton.styleFrom(
+            side: const BorderSide(color: Colors.transparent),
           ),
         ),
       ],

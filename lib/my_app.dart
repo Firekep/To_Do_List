@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,7 +37,7 @@ class _MyAppState extends State<MyApp> {
             backgroundColor: Colors.redAccent,
             iconTheme: const IconThemeData(color: Colors.white),
             primaryColor: Colors.black,
-            buttonColor: const Color.fromRGBO(155, 22, 61, 1),
+            shadowColor: const Color.fromRGBO(155, 22, 61, 1),//used to button theme
             focusColor: Colors.transparent,
             appBarTheme: const AppBarTheme(
               backgroundColor: Color.fromRGBO(155, 22, 61, 1),
@@ -76,7 +77,7 @@ class _MyAppState extends State<MyApp> {
               )
             ),
             primaryColorLight: Colors.white,
-            buttonColor: Colors.black,
+            shadowColor: Colors.black, // used to button theme
             focusColor: Colors.transparent,
             iconTheme: const IconThemeData(color: Colors.white),
             dialogTheme: DialogTheme(
@@ -147,7 +148,9 @@ class _MyAppState extends State<MyApp> {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isDarkTheme', isDarkTheme);
-    } catch (error){}
+    } catch (error){ if (kDebugMode) {
+      print('Theme');
+    }}
   }
 
   Future _load() async {

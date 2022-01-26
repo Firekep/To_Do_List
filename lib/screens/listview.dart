@@ -1,15 +1,13 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:to_do_list/models/alertboxes/add_alertbox.dart';
-import 'package:to_do_list/models/alertboxes/info_alert.box.dart';
-import 'package:to_do_list/models/buttons/floating.button.dart';
 import 'package:to_do_list/models/item.dart';
+import 'package:to_do_list/models/ultilits/alertboxes/add_alertbox.dart';
+import 'package:to_do_list/models/ultilits/alertboxes/info_alert.box.dart';
+import 'package:to_do_list/models/ultilits/buttons/floating.button.dart';
 
 class Listview extends StatefulWidget {
   const Listview({Key? key}) : super(key: key);
-
 
   @override
   _ListviewState createState() => _ListviewState();
@@ -33,56 +31,51 @@ class _ListviewState extends State<Listview> {
         title: const Text("My Notes"),
       ),
       body: ListView.builder(
-          itemCount: _items.length,
-          itemBuilder: (context, index) {
-            final item = _items[index];
-            return Dismissible(
-              child: Container(
-                child: CheckboxListTile(
-                  title: Text(
-                    item.title!,style: TextStyle(color: Theme.of(context).backgroundColor),
-                  ),
-                  subtitle: Text(
-                    item.content!,
-                    style: (Theme.of(context).textTheme.bodyText1),
-                  ),
-                  onChanged: (value) {
-                    setState(
-                          () {
-                        item.done = value!;
-                        _save();
-                      },
-                    );
-                  },
-                  value: item.done,
+        itemCount: _items.length,
+        itemBuilder: (context, index) {
+          final item = _items[index];
+          return Dismissible(
+            child: Container(
+              child: CheckboxListTile(
+                title: Text(
+                  item.title!,
+                  style: TextStyle(color: Theme.of(context).backgroundColor),
                 ),
-                decoration: const BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: Colors.black,
-                            width: 1.2
-                        )
-                    )
+                subtitle: Text(
+                  item.content!,
+                  style: (Theme.of(context).textTheme.bodyText1),
                 ),
+                onChanged: (value) {
+                  setState(
+                    () {
+                      item.done = value!;
+                      _save();
+                    },
+                  );
+                },
+                value: item.done,
               ),
-              key: Key(item.title!),
-              onDismissed: (direction) {
-                _remove(index);
-              },
-              background: Container(
-                  child: const Icon(Icons.arrow_forward_outlined),
-                  color: Theme.of(context).backgroundColor),
-              secondaryBackground: Container(
-                child: const Icon(
-                  Icons.arrow_back_outlined,
-                  size: 25,
-                ),
-                color: Theme.of(context).backgroundColor,
+              decoration: const BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(color: Colors.black, width: 1.2))),
+            ),
+            key: Key(item.title!),
+            onDismissed: (direction) {
+              _remove(index);
+            },
+            background: Container(
+                child: const Icon(Icons.arrow_forward_outlined),
+                color: Theme.of(context).backgroundColor),
+            secondaryBackground: Container(
+              child: const Icon(
+                Icons.arrow_back_outlined,
+                size: 25,
               ),
-            );
-          },
+              color: Theme.of(context).backgroundColor,
+            ),
+          );
+        },
       ),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingButton(
         onPressed: () => _add(),
@@ -109,9 +102,15 @@ class _ListviewState extends State<Listview> {
             title: const Text(
                 'Por favor, selecione ao menos um item para ser deletado.'),
             actions: [
-              TextButton(
+              OutlinedButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(color:Colors.red),
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Colors.transparent),
+                ),
               )
             ],
           );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class FloatingButton extends StatelessWidget {
   final void Function() onPressed;
@@ -27,7 +26,7 @@ class FloatingButton extends StatelessWidget {
               highlightColor: Colors.transparent,
               onPressed: onPressedInfo,
               elevation: 2.0,
-              fillColor: Theme.of(context).buttonColor,
+              fillColor: Theme.of(context).shadowColor,
               child: const Icon(
                 Icons.info_outline,
                 size: 35.0,
@@ -40,7 +39,7 @@ class FloatingButton extends StatelessWidget {
               highlightColor: Colors.transparent,
               onPressed: onPressed,
               elevation: 2.0,
-              fillColor: Theme.of(context).buttonColor,
+              fillColor: Theme.of(context).shadowColor,
               child: const Icon(
                 Icons.add,
                 size: 35.0,
@@ -51,7 +50,7 @@ class FloatingButton extends StatelessWidget {
             RawMaterialButton(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
-              fillColor: Theme.of(context).buttonColor,
+              fillColor: Theme.of(context).shadowColor,
               onPressed: onPressedDelete,
               elevation: 2.0,
               child: const Icon(

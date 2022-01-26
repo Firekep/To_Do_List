@@ -28,7 +28,7 @@ class _AppHomeButtonsState extends State<AppHomeButtons> {
             );
           },
           elevation: 2.0,
-          fillColor: Theme.of(context).buttonColor,
+          fillColor: Theme.of(context).shadowColor,
           child: const Icon(
             Icons.list_alt_outlined,
             size: 35.0,
@@ -48,7 +48,7 @@ class _AppHomeButtonsState extends State<AppHomeButtons> {
             );
           },
           elevation: 2.0,
-          fillColor: Theme.of(context).buttonColor,
+          fillColor: Theme.of(context).shadowColor,
           child: const Icon(
             Icons.calculate,
             size: 35.0,
@@ -68,7 +68,7 @@ class _AppHomeButtonsState extends State<AppHomeButtons> {
             );
           },
           elevation: 2.0,
-          fillColor: Theme.of(context).buttonColor,
+          fillColor: Theme.of(context).shadowColor,
           child: const Icon(
             Icons.calendar_today_outlined,
             size: 35.0,

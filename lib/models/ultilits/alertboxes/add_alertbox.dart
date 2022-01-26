@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list/models/item.dart';
-import 'package:to_do_list/models/input.dart';
+import 'package:to_do_list/models/ultilits/inputs/input.dart';
 
 class AlertBox extends StatefulWidget {
   const AlertBox({Key? key}) : super(key: key);
@@ -35,18 +35,24 @@ class _AlertBoxState extends State<AlertBox> {
         ],
       ),
       actions: <Widget>[
-        FlatButton(
+        OutlinedButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text(
             'Cancelar',
             style: TextStyle(color: Colors.red),
           ),
+          style: OutlinedButton.styleFrom(
+            side: const BorderSide(color: Colors.transparent),
+          ),
         ),
-        FlatButton(
+        OutlinedButton(
           onPressed: () => _submit(),
           child: const Text(
             'Salvar',
             style: TextStyle(color: Colors.green),
+          ),
+          style: OutlinedButton.styleFrom(
+            side: const BorderSide(color: Colors.transparent),
           ),
         ),
       ],

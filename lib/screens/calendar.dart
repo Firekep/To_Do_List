@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
@@ -43,12 +44,12 @@ class _CalendarState extends State<Calendar> {
             width: 5.0,
           ),
         ),
-         Event(
-          date:  DateTime(2020, 2, 10),
+        Event(
+          date: DateTime(2020, 2, 10),
           title: 'Event 2',
           icon: _eventIcon,
         ),
-         Event(
+        Event(
           date: DateTime(2020, 2, 15),
           title: 'Event 3',
           icon: _eventIcon,
@@ -60,34 +61,34 @@ class _CalendarState extends State<Calendar> {
   @override
   void initState() {
     _markedDateMap.add(
-         DateTime(2020, 2, 25),
-         Event(
+        DateTime(2020, 2, 25),
+        Event(
           date: DateTime(2020, 2, 25),
           title: 'Event 5',
           icon: _eventIcon,
         ));
 
     _markedDateMap.add(
-         DateTime(2020, 2, 10),
+        DateTime(2020, 2, 10),
         Event(
-          date:  DateTime(2020, 2, 10),
+          date: DateTime(2020, 2, 10),
           title: 'Event 4',
           icon: _eventIcon,
         ));
 
     _markedDateMap.addAll(DateTime(2019, 2, 11), [
-       Event(
-        date:  DateTime(2019, 2, 11),
+      Event(
+        date: DateTime(2019, 2, 11),
         title: 'Event 1',
         icon: _eventIcon,
       ),
-       Event(
-        date:  DateTime(2019, 2, 11),
+      Event(
+        date: DateTime(2019, 2, 11),
         title: 'Event 2',
         icon: _eventIcon,
       ),
       Event(
-        date:  DateTime(2019, 2, 11),
+        date: DateTime(2019, 2, 11),
         title: 'Event 3',
         icon: _eventIcon,
       ),
@@ -101,14 +102,18 @@ class _CalendarState extends State<Calendar> {
       todayBorderColor: Theme.of(context).primaryColor,
       onDayPressed: (DateTime date, List<Event> events) {
         setState(() => _currentDate2 = date);
-        events.forEach((event) => print(event.title));
+        for (var event in events) {
+          if (kDebugMode) {
+            print(event.title);
+          }
+        }
       },
       daysTextStyle: TextStyle(
         color: Theme.of(context).primaryColor,
       ),
       daysHaveCircularBorder: true,
       showOnlyCurrentMonthDate: false,
-      weekendTextStyle:const TextStyle(
+      weekendTextStyle: const TextStyle(
         color: Color.fromRGBO(155, 22, 61, 1),
       ),
       weekdayTextStyle: TextStyle(
@@ -123,7 +128,7 @@ class _CalendarState extends State<Calendar> {
       targetDateTime: _targetDateTime,
       customGridViewPhysics: const NeverScrollableScrollPhysics(),
       markedDateCustomShapeBorder:
-      const CircleBorder(side: BorderSide(color: Colors.yellow)),
+          const CircleBorder(side: BorderSide(color: Colors.yellow)),
       markedDateCustomTextStyle: const TextStyle(
         fontSize: 18,
         color: Colors.white,
@@ -134,7 +139,7 @@ class _CalendarState extends State<Calendar> {
       ),
 
       todayButtonColor: Theme.of(context).backgroundColor,
-      selectedDayTextStyle:const TextStyle(
+      selectedDayTextStyle: const TextStyle(
         color: Colors.white,
       ),
       minSelectedDate: _currentDate.subtract(const Duration(days: 360)),
@@ -154,16 +159,18 @@ class _CalendarState extends State<Calendar> {
         });
       },
       onDayLongPressed: (DateTime date) {
-        print('long pressed date $date');
+        if (kDebugMode) {
+          print('long pressed date $date');
+        }
       },
       selectedDayButtonColor: const Color.fromRGBO(155, 22, 61, 1),
       selectedDayBorderColor: Theme.of(context).primaryColor,
     );
 
-    return  Scaffold(
-        appBar:  AppBar(
-           centerTitle: true,
-          title:  const Text('Calendar'),
+    return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text('Calendar'),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -179,18 +186,18 @@ class _CalendarState extends State<Calendar> {
                   left: 16.0,
                   right: 16.0,
                 ),
-                child:  Row(
+                child: Row(
                   children: <Widget>[
                     Expanded(
                         child: Text(
-                          _currentMonth,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24.0,
-                          ),
-                        )),
-                    FlatButton(
-                      child: const Text('Anterior'),
+                      _currentMonth,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0,
+                      ),
+                    )),
+                    OutlinedButton(
+                      child: Text('Anterior', style:TextStyle(color: Theme.of(context).primaryColor),),
                       onPressed: () {
                         setState(() {
                           _targetDateTime = DateTime(
@@ -199,18 +206,26 @@ class _CalendarState extends State<Calendar> {
                               DateFormat.yMMM().format(_targetDateTime);
                         });
                       },
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.transparent),
+                      ),
                     ),
-                    FlatButton(
-                      child: const Text('Seguinte'),
+                    OutlinedButton(
+                      child:Text('Seguinte',  style:TextStyle(color: Theme.of(context).primaryColor)),
                       onPressed: () {
-                        setState(() {
-                          _targetDateTime = DateTime(
-                              _targetDateTime.year, _targetDateTime.month + 1);
-                          _currentMonth =
-                              DateFormat.yMMM().format(_targetDateTime);
-                        });
+                        setState(
+                          () {
+                            _targetDateTime = DateTime(_targetDateTime.year,
+                                _targetDateTime.month + 1);
+                            _currentMonth =
+                                DateFormat.yMMM().format(_targetDateTime);
+                          },
+                        );
                       },
-                    )
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.transparent),
+                      ),
+                    ),
                   ],
                 ),
               ),

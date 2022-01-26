@@ -50,11 +50,14 @@ class _InfoBoxState extends State<InfoBox> {
         ],
       ),
       actions: <Widget>[
-        FlatButton(
+        OutlinedButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text(
             'Fechar',
             style: TextStyle(color: Colors.red),
+          ),
+          style: OutlinedButton.styleFrom(
+            side: const BorderSide(color: Colors.transparent),
           ),
         ),
       ],

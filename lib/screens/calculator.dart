@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get.dart';
-
+import 'package:to_do_list/models/controller/home_controller.dart';
 import '../models/build.button.dart';
-import '../controller/home_controller.dart';
 
 class Calculator extends StatelessWidget {
   Calculator({Key? key}) : super(key: key);
 
   final controller = Get.put(HomeController());
-  Color color = Colors.white;
+  final Color color = Colors.white;
 
   @override
   Widget build(BuildContext context) {
