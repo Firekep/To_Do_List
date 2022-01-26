@@ -18,8 +18,7 @@ class Input extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      keyboardType: TextInputType.visiblePassword,
-      autocorrect: false,
+      autocorrect: true,
       enableSuggestions: false,
       style: Theme.of(context).textTheme.bodyText1,
       decoration: InputDecoration(

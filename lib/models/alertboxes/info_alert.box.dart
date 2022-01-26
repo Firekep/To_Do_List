@@ -50,7 +50,7 @@ class _InfoBoxState extends State<InfoBox> {
         ],
       ),
       actions: <Widget>[
-        TextButton(
+        FlatButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text(
             'Fechar',

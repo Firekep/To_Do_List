@@ -35,14 +35,14 @@ class _AlertBoxState extends State<AlertBox> {
         ],
       ),
       actions: <Widget>[
-        TextButton(
+        FlatButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text(
             'Cancelar',
             style: TextStyle(color: Colors.red),
           ),
         ),
-        TextButton(
+        FlatButton(
           onPressed: () => _submit(),
           child: const Text(
             'Salvar',
