@@ -17,6 +17,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   shared_preferences: ^2.0.11
   auto_size_text: ^3.0.0
+  math_expressions: ^2.3.0
+  get: ^4.6.1
+  syncfusion_flutter_calendar: ^19.4.43
+  flutter_calendar_carousel: ^2.1.0
+  intl: ^0.17.0
+
+flutter_localizations:
+    sdk: flutter
+
 
 dev_dependencies:
   flutter_test:
@@ -32,7 +41,8 @@ flutter_icons:
 
 
 flutter:
-
+  assets:
+    - assets/image/main.png
 
   uses-material-design: true
 

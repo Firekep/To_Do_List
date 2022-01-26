@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:to_do_list/screens/listview.dart';
+import 'package:to_do_list/screens/app_home.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -27,6 +27,11 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
+            textButtonTheme: TextButtonThemeData(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(198, 45, 91, 1),)
+                )
+            ),
             primaryColorLight: Colors.white,
             backgroundColor: Colors.redAccent,
             iconTheme: const IconThemeData(color: Colors.white),
@@ -64,6 +69,12 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
           darkTheme: ThemeData(
+            textButtonTheme: TextButtonThemeData(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(1,1,1,0.9),
+                  )
+              )
+            ),
             primaryColorLight: Colors.white,
             buttonColor: Colors.black,
             focusColor: Colors.transparent,
@@ -136,9 +147,7 @@ class _MyAppState extends State<MyApp> {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isDarkTheme', isDarkTheme);
-    } catch (error) {
-      print(error);
-    }
+    } catch (error){}
   }
 
   Future _load() async {

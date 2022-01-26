@@ -1,151 +1,118 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_list/models/memory.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 
+import '../models/build.button.dart';
+import '../controller/home_controller.dart';
 
-class Calculator extends StatefulWidget {
-  const Calculator({Key? key}) : super(key: key);
+class Calculator extends StatelessWidget {
+  Calculator({Key? key}) : super(key: key);
 
-  @override
-  _CalculatorState createState() => _CalculatorState();
-}
-
-class _CalculatorState extends State<Calculator> {
-  final _memory = Memory();
+  final controller = Get.put(HomeController());
+  Color color = Colors.white;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
         title: const Text('Calculadora'),
+        centerTitle: true,
       ),
       body: Column(
-        children: <Widget>[
-          _buildDisplay(),
-          const Divider(height: 0.1),
-          _buildKeyboard(),
-        ],
-      ),
-    );
-  }
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Obx(() =>  Container(
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+            child: Text(controller.equation.value, style:TextStyle(fontSize: controller.equationFontSize.value),),
+          )),
 
-  Widget _buildDisplay() {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        color: Colors.black,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: AutoSizeText(
-                _memory.result,
-                minFontSize: 20.0,
-                maxFontSize: 80.0,
-                maxLines: 1,
-                textAlign: TextAlign.end,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w200,
-                  decoration: TextDecoration.none,
-                  fontSize: 80.0,
-                  color: Colors.white,
+          Obx(() => Container(
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+            child: Text(controller.result.value, style: TextStyle(fontSize: controller.resultFontSize.value),),
+          )),
+
+          const Expanded(child: Divider()),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.75,
+                child: Table(
+                  children:  [
+                    TableRow(
+                        children:[
+                          BuildButton(buttonText: "C", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: "⌫", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: "÷", buttonHeight: 1, buttonColor: color),
+                        ]
+                    ),
+
+                    TableRow(
+                        children:[
+                          BuildButton(buttonText: "7", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: "8", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: "9", buttonHeight: 1, buttonColor: color),
+                        ]
+                    ),
+
+                    TableRow(
+                        children:[
+                          BuildButton(buttonText: "4", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: "5", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: "6", buttonHeight: 1, buttonColor: color),
+                        ]
+                    ),
+
+                    TableRow(
+                        children:[
+                          BuildButton(buttonText: "1", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: "2", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: "3", buttonHeight: 1, buttonColor: color),
+                        ]
+                    ),
+                    TableRow(
+                        children:[
+                          BuildButton(buttonText: ".", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: "0", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: "00", buttonHeight: 1, buttonColor: color),
+                        ]
+                    ),
+                  ],
                 ),
+
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
-  Widget _buildKeyboardButton(String label,
-      {int flex = 1, Color textColor = Colors.white, Color backgroundColor = Colors.black}) {
-    return Expanded(
-      flex: flex,
-      child: RaisedButton(
-        color: backgroundColor,
-        textColor: textColor,
-        child: Text(
-          label,
-          style: const TextStyle(fontSize: 24),
-        ),
-        onPressed: () {
-          setState(() {
-            _memory.applyCommand(label);
-          });
-        },
-      ),
-    );
-  }
+              SizedBox(
+                width: MediaQuery.of(context).size.width  * 0.25,
+                child: Table(
+                  children: [
+                    TableRow(
+                        children:[ BuildButton(buttonText: '×', buttonHeight: 1, buttonColor: color,)
+                        ]),
 
-  Widget _buildKeyboard() {
-    return Container(
-      color: Colors.black,
-      height: 400.0,
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                _buildKeyboardButton('AC', textColor: Colors.deepOrange),
-                _buildKeyboardButton('DEL', textColor: Colors.deepOrange),
-                _buildKeyboardButton('%', textColor: Colors.deepOrange),
-                _buildKeyboardButton('÷', textColor: Colors.deepOrange),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                _buildKeyboardButton('7'),
-                _buildKeyboardButton('8'),
-                _buildKeyboardButton('9'),
-                _buildKeyboardButton('x', textColor: Colors.deepOrange),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                _buildKeyboardButton('4'),
-                _buildKeyboardButton('5'),
-                _buildKeyboardButton('6'),
-                _buildKeyboardButton('+', textColor: Colors.deepOrange),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                _buildKeyboardButton('1'),
-                _buildKeyboardButton('2'),
-                _buildKeyboardButton('3'),
-                _buildKeyboardButton('-', textColor: Colors.deepOrange),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                _buildKeyboardButton('0', flex: 2),
-                _buildKeyboardButton('.'),
-                _buildKeyboardButton('=', textColor: Colors.deepOrange),
-              ],
-            ),
-          ),
+                    TableRow(
+                        children:[ BuildButton(buttonText: '-', buttonHeight: 1, buttonColor: color),
+                        ]),
+
+                    TableRow(
+                        children:[ BuildButton(buttonText: '+', buttonHeight: 1, buttonColor: color),
+                        ]),
+
+                    TableRow(
+                        children:[ BuildButton(buttonText: '=', buttonHeight: 2, buttonColor: color),
+                        ]),
+
+                  ],
+                ),
+              )
+
+            ],
+          )
+
         ],
       ),
     );

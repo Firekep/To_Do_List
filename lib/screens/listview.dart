@@ -4,24 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list/models/alertboxes/add_alertbox.dart';
 import 'package:to_do_list/models/alertboxes/info_alert.box.dart';
-import 'package:to_do_list/models/floating.button.dart';
+import 'package:to_do_list/models/buttons/floating.button.dart';
 import 'package:to_do_list/models/item.dart';
-import 'package:to_do_list/models/menu.dart';
 
-class AppHome extends StatefulWidget {
-  final void Function(bool value) onChangeTheme;
-  final bool isLightTheme;
+class Listview extends StatefulWidget {
+  const Listview({Key? key}) : super(key: key);
 
-  const AppHome({
-    required this.isLightTheme,
-    required this.onChangeTheme,
-  });
 
   @override
-  _AppHomeState createState() => _AppHomeState();
+  _ListviewState createState() => _ListviewState();
 }
 
-class _AppHomeState extends State<AppHome> {
+class _ListviewState extends State<Listview> {
   List<Item> _items = [];
   final newTaskCrtl = TextEditingController();
 
@@ -37,16 +31,6 @@ class _AppHomeState extends State<AppHome> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text("My Notes"),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return Menu(
-              isLightTheme: widget.isLightTheme,
-              onChangeTheme: (value) {
-                widget.onChangeTheme(value);
-              },
-            );
-          },
-        ),
       ),
       body: ListView.builder(
           itemCount: _items.length,

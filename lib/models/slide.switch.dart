@@ -25,7 +25,7 @@ class SlideSwitch extends StatelessWidget {
         Switch(
           value: value,
           onChanged: onChange,
-          activeTrackColor: Colors.yellow,
+          activeTrackColor: const Color.fromRGBO(155, 22, 61, 1),
           activeColor: Colors.white38,
           inactiveThumbColor: Colors.white,
           inactiveTrackColor: Colors.black,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ResultDisplay extends StatelessWidget {
-  ResultDisplay({required this.text});
+  const ResultDisplay({Key? key, required this.text}) : super(key: key);
 
   final String text;
 
@@ -13,10 +13,10 @@ class ResultDisplay extends StatelessWidget {
         color: Colors.black,
         child: Container(
             alignment: Alignment.bottomRight,
-            padding: EdgeInsets.only(right: 24, bottom: 24),
+            padding: const EdgeInsets.only(right: 24, bottom: 24),
             child: Text(
               text,
-              style: TextStyle(color: Colors.white, fontSize: 34),
+              style: const TextStyle(color: Colors.white, fontSize: 34),
             )));
   }
 }
