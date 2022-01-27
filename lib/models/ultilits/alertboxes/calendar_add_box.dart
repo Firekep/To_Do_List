@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:to_do_list/database/calendar_items.dart';
 import 'package:to_do_list/models/ultilits/inputs/input.dart';
-
-import '../../calendar_items.dart';
 
 class CalendarAdd extends StatefulWidget {
   const CalendarAdd({Key? key}) : super(key: key);
@@ -11,20 +11,43 @@ class CalendarAdd extends StatefulWidget {
 }
 
 class _CalendarAddState extends State<CalendarAdd> {
-  late final String data;
   final _contentCtrl = TextEditingController();
   final keyboard = TextInputType.visiblePassword;
+  DateTime? selectedDate;
+  final myController = TextEditingController();
+
+  String getText() {
+    if (selectedDate == null) {
+      return 'Selecione uma data';
+    } else {
+      return DateFormat('dd/MM/yyyy').format(selectedDate!);
+      // return '${selectedDate.month}/${selectedDate.day}/${selectedDate.year}';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        data ,
+      title: const Text(
+        'Adcionar uma data',
         textAlign: TextAlign.center,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Row(
+            children: [
+              OutlinedButton(
+                onPressed: () => _selectDate(context),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Colors.redAccent),
+                ),
+                child: Text(
+                  getText(),style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+              ),
+            ],
+          ),
           Input(
             label: 'Conteúdo:',
             controller: _contentCtrl,
@@ -58,12 +81,32 @@ class _CalendarAddState extends State<CalendarAdd> {
 
   void _submit() {
     final content = _contentCtrl.text;
+    final data = getText().toString();
 
-    if (content.isNotEmpty && content.isNotEmpty) {
+    // String string = dateFormat.format(selectedDate);
+    // String string = dateFormat.format(DateTime.now()); /
+
+    if (content.isNotEmpty && data.isNotEmpty) {
       final item = CalendarItem(
         content: content,
+        date : data,
       );
       Navigator.of(context).pop(item);
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final initialDate = DateTime.now();
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate ?? initialDate,
+        firstDate: DateTime(2001, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        print(getText());
+      });
     }
   }
 }

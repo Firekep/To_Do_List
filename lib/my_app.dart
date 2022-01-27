@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list/screens/app_home.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -26,6 +27,11 @@ class _MyAppState extends State<MyApp> {
       valueListenable: notifier,
       builder: (_, mode, __) {
         return MaterialApp(
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('pt', 'BR')],
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             textButtonTheme: TextButtonThemeData(

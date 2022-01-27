@@ -1,21 +1,21 @@
 class CalendarItem {
   String? content;
-  bool? done;
+  String? date;
 
   CalendarItem({
     required this.content,
-    this.done = false,
+    required this.date,
   });
 
   CalendarItem.fromJson(Map<String, dynamic> json) {
     content = json['content'] as String;
-    done = json['done'] as bool;
+    date = json['data'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
     return {
       'content': content,
-      'done': done,
+      'data' : date,
     };
   }
 }
