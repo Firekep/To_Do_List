@@ -29,51 +29,56 @@ class _CalendarAddState extends State<CalendarAdd> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text(
-        'Adcionar uma data',
+        'Adcionando um lembrete',
         textAlign: TextAlign.center,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              OutlinedButton(
-                onPressed: () => _selectDate(context),
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Colors.redAccent),
-                ),
-                child: Text(
-                  getText(),style: TextStyle(color: Theme.of(context).primaryColor),
-                ),
-              ),
-            ],
+          TextButton(
+            onPressed: () => _selectDate(context),
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: Colors.redAccent),
+            ),
+            child: Text(
+              getText(),style: TextStyle(color: Theme.of(context).primaryColor),
+            ),
           ),
           Input(
-            label: 'Conteúdo:',
+            label: 'Descrição:',
             controller: _contentCtrl,
           ),
         ],
       ),
       actions: <Widget>[
-        OutlinedButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text(
-            'Cancelar',
-            style: TextStyle(color: Colors.red),
-          ),
-          style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: Colors.transparent),
-          ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            OutlinedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(color: Colors.red),
+              ),
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Colors.transparent),
+              ),
+            ),
+            OutlinedButton(
+              onPressed: () => _submit(),
+              child: const Text(
+                'Salvar',
+                style: TextStyle(color: Colors.green),
+              ),
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Colors.transparent),
+              ),
+            ),
+          ],
         ),
-        OutlinedButton(
-          onPressed: () => _submit(),
-          child: const Text(
-            'Salvar',
-            style: TextStyle(color: Colors.green),
-          ),
-          style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: Colors.transparent),
-          ),
+        Center(
+          child: Image.asset('assets/image/present.gif',width: 150,height: 150,),
         ),
       ],
     );
@@ -82,9 +87,6 @@ class _CalendarAddState extends State<CalendarAdd> {
   void _submit() {
     final content = _contentCtrl.text;
     final data = getText().toString();
-
-    // String string = dateFormat.format(selectedDate);
-    // String string = dateFormat.format(DateTime.now()); /
 
     if (content.isNotEmpty && data.isNotEmpty) {
       final item = CalendarItem(
@@ -105,7 +107,6 @@ class _CalendarAddState extends State<CalendarAdd> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        print(getText());
       });
     }
   }

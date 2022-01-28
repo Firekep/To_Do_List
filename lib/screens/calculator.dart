@@ -7,7 +7,7 @@ class Calculator extends StatelessWidget {
   Calculator({Key? key}) : super(key: key);
 
   final controller = Get.put(HomeController());
-  final Color color = Colors.white;
+  final Color color = const Color.fromRGBO(198, 45, 91, 1);
 
   @override
   Widget build(BuildContext context) {

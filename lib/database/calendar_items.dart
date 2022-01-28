@@ -9,7 +9,7 @@ class CalendarItem {
 
   CalendarItem.fromJson(Map<String, dynamic> json) {
     content = json['content'] as String;
-    date = json['data'] ?? '';
+    date = json['data'];
   }
 
   Map<String, dynamic> toJson() {

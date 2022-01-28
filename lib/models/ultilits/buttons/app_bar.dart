@@ -15,16 +15,13 @@ class AppBottomBar extends StatelessWidget {
       children: [
         OutlinedButton(
             onPressed: onPressed,
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: Colors.transparent),
+            ),
             child: const Icon(
               Icons.add,
               color: Colors.white,
             )),
-        // OutlinedButton(
-        //     onPressed: () {},
-        //     child: const Icon(
-        //       Icons.delete,
-        //       color: Colors.white,
-        //     ))
       ],
     );
   }

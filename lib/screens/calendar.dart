@@ -5,7 +5,7 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:to_do_list/datas/calendar_items.dart';
+import 'package:to_do_list/database/calendar_items.dart';
 import 'package:to_do_list/models/ultilits/alertboxes/calendar_add_box.dart';
 import 'package:to_do_list/models/ultilits/buttons/app_bar.dart';
 
@@ -38,25 +38,19 @@ class _CalendarState extends State<Calendar> {
 
   final EventList<Event> _markedDateMap = EventList<Event>(
     events: {
-      DateTime(2020, 2, 10): [
+      DateTime(2022, 5, 15): [
         Event(
-          date: DateTime(2020, 2, 14),
+          date: DateTime(2022, 5, 15),
           title: 'Event 1',
           icon: _eventIcon,
-          dot: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 1.0),
-            color: Colors.red,
-            height: 5.0,
-            width: 5.0,
-          ),
         ),
         Event(
-          date: DateTime(2020, 2, 10),
+          date: DateTime(2022, 5, 24),
           title: 'Event 2',
           icon: _eventIcon,
         ),
         Event(
-          date: DateTime(2020, 2, 15),
+          date: DateTime(2022, 11, 7),
           title: 'Event 3',
           icon: _eventIcon,
         ),
@@ -74,38 +68,28 @@ class _CalendarState extends State<Calendar> {
   void initState() {
     _load();
     _markedDateMap.add(
-        DateTime(2020, 2, 25),
+        DateTime(2022, 5, 24),
         Event(
-          date: DateTime(2020, 2, 25),
+          date: DateTime(2022, 5, 24),
           title: 'Event 5',
           icon: _eventIcon,
         ));
 
     _markedDateMap.add(
-        DateTime(2020, 2, 10),
+        DateTime(2022, 5, 15),
         Event(
-          date: DateTime(2020, 2, 10),
+          date: DateTime(2022, 5, 15),
           title: 'Event 4',
           icon: _eventIcon,
         ));
 
-    _markedDateMap.addAll(DateTime(2019, 2, 11), [
-      Event(
-        date: DateTime(2019, 2, 11),
-        title: 'Event 1',
-        icon: _eventIcon,
-      ),
-      Event(
-        date: DateTime(2019, 2, 11),
-        title: 'Event 2',
-        icon: _eventIcon,
-      ),
-      Event(
-        date: DateTime(2019, 2, 11),
-        title: 'Event 3',
-        icon: _eventIcon,
-      ),
-    ]);
+    _markedDateMap.add(
+        DateTime(2022, 11, 7),
+        Event(
+          date: DateTime(2022, 11, 7),
+          title: 'Event 4',
+          icon: _eventIcon,
+        ));
     super.initState();
   }
 
@@ -126,13 +110,13 @@ class _CalendarState extends State<Calendar> {
       ),
       daysHaveCircularBorder: true,
       showOnlyCurrentMonthDate: false,
-      weekendTextStyle: const TextStyle(
-        color: Color.fromRGBO(155, 22, 61, 1),
+      weekendTextStyle: TextStyle(
+        color: Theme.of(context).shadowColor,
       ),
       weekdayTextStyle: TextStyle(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).shadowColor,
       ),
-      thisMonthDayBorderColor: Colors.grey,
+      thisMonthDayBorderColor: Theme.of(context).disabledColor,
       weekFormat: false,
 //      firstDayOfWeek: 4,
       markedDatesMap: _markedDateMap,
@@ -141,7 +125,7 @@ class _CalendarState extends State<Calendar> {
       targetDateTime: _targetDateTime,
       customGridViewPhysics: const NeverScrollableScrollPhysics(),
       markedDateCustomShapeBorder:
-          const CircleBorder(side: BorderSide(color: Colors.yellow)),
+          const CircleBorder(side: BorderSide(color: Colors.blue)),
       markedDateCustomTextStyle: const TextStyle(
         fontSize: 18,
         color: Colors.white,
@@ -185,79 +169,83 @@ class _CalendarState extends State<Calendar> {
         centerTitle: true,
         title: const Text('Calendar'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            //custom icon
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          //custom icon
 
-            Container(
-              margin: const EdgeInsets.only(
-                top: 30.0,
-                bottom: 16.0,
-                left: 16.0,
-                right: 16.0,
-              ),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                      child: Text(
-                    _currentMonth,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.0,
-                    ),
-                  )),
-                  OutlinedButton(
+          Container(
+            margin: const EdgeInsets.only(
+              top: 30.0,
+              bottom: 16.0,
+              left: 16.0,
+              right: 16.0,
+            ),
+            child: Row(
+              children: <Widget>[
+                Expanded(
                     child: Text(
-                      'Anterior',
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    ),
-                    onPressed: () {
-                      setState(() {
+                  _currentMonth,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24.0,
+                  ),
+                )),
+                OutlinedButton(
+                  child: Text(
+                    'Anterior',
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _targetDateTime = DateTime(
+                          _targetDateTime.year, _targetDateTime.month - 1);
+                      _currentMonth =
+                          DateFormat.yMMM().format(_targetDateTime);
+                    });
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.transparent),
+                  ),
+                ),
+                OutlinedButton(
+                  child: Text('Seguinte',
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColor)),
+                  onPressed: () {
+                    setState(
+                      () {
                         _targetDateTime = DateTime(
-                            _targetDateTime.year, _targetDateTime.month - 1);
+                            _targetDateTime.year, _targetDateTime.month + 1);
                         _currentMonth =
                             DateFormat.yMMM().format(_targetDateTime);
-                      });
-                    },
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.transparent),
-                    ),
+                      },
+                    );
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.transparent),
                   ),
-                  OutlinedButton(
-                    child: Text('Seguinte',
-                        style:
-                            TextStyle(color: Theme.of(context).primaryColor)),
-                    onPressed: () {
-                      setState(
-                        () {
-                          _targetDateTime = DateTime(
-                              _targetDateTime.year, _targetDateTime.month + 1);
-                          _currentMonth =
-                              DateFormat.yMMM().format(_targetDateTime);
-                        },
-                      );
-                    },
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.transparent),
-                    ),
-                  ),
-                ],
-              ),
-              decoration: const BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(color: Colors.black, width: 1.2))),
+                ),
+              ],
             ),
-            Container(
+            decoration: const BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(color: Colors.black, width: 1.2))),
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 16.0),
               child: _calendarCarouselNoHeader,
               decoration: const BoxDecoration(
                   border: Border(
                       bottom: BorderSide(color: Colors.black, width: 1.2))),
             ),
-            ListView.builder(
+          ),
+          Expanded(
+            flex: 1,
+            child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemCount: _items.length,
@@ -268,23 +256,33 @@ class _CalendarState extends State<Calendar> {
                     onDismissed: (direction) {
                       _remove(index);
                     },
-                    child: Container(
+                    child: Card(
                       child: ListTile(
-                          title: Text(item.date!),
+                          title: Text(item.date!, style: const TextStyle(color: Colors.black),
+                          ),
                         subtitle: Text(item.content!),
-                        leading: IconButton(onPressed: () => _remove(index),
+                        leading: Image.asset('assets/image/openbox.png',width: 50,height: 50,),
+                        // leading:  IconButton(color: Colors.green, onPressed:(){}, icon: const Icon(Icons.calendar_today_sharp),),
+                        trailing: IconButton(onPressed: () => _remove(index),
                             icon: const Icon(Icons.delete_forever_rounded),
                           color: Colors.red,
                         ),
                       ),
-                      decoration: const BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(color: Colors.black, width: 1.2))),
+                    ),
+                    background: Container(
+                        child: const Icon(Icons.arrow_forward_outlined),
+                        color: Theme.of(context).backgroundColor),
+                    secondaryBackground: Container(
+                      child: const Icon(
+                        Icons.arrow_back_outlined,
+                        size: 25,
+                      ),
+                      color: Theme.of(context).backgroundColor,
                     ),
                   );
                 }),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
         color: Theme.of(context).shadowColor,

@@ -43,6 +43,8 @@ flutter_icons:
 flutter:
   assets:
     - assets/image/main.png
+    - assets/image/openbox.png
+    - assets/image/present.gif
 
   uses-material-design: true
 
