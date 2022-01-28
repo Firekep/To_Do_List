@@ -11,6 +11,7 @@ class _InfoBoxState extends State<InfoBox> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Theme.of(context).cardColor,
       title: const Text(
         'Como usar?',
         textAlign: TextAlign.center,

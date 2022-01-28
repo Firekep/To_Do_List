@@ -17,8 +17,9 @@ class _AlertBoxState extends State<AlertBox> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
-        ':Nova nota:',
+      backgroundColor: Theme.of(context).cardColor,
+      title: Text(
+        ':Nova nota:',style: TextStyle(color: Theme.of(context).primaryColor),
         textAlign: TextAlign.center,
       ),
       content: Column(

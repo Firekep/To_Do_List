@@ -90,6 +90,14 @@ class _CalendarState extends State<Calendar> {
           title: 'Event 4',
           icon: _eventIcon,
         ));
+
+    _markedDateMap.add(
+        DateTime(2022, 11, 7),
+        Event(
+          date: DateTime(2022, 11, 7),
+          title: 'Event 4',
+          icon: _eventIcon,
+        ));
     super.initState();
   }
 
@@ -110,11 +118,11 @@ class _CalendarState extends State<Calendar> {
       ),
       daysHaveCircularBorder: true,
       showOnlyCurrentMonthDate: false,
-      weekendTextStyle: TextStyle(
-        color: Theme.of(context).shadowColor,
+      weekendTextStyle: const TextStyle(
+        color: Colors.red,
       ),
       weekdayTextStyle: TextStyle(
-        color: Theme.of(context).shadowColor,
+        color: Theme.of(context).backgroundColor,
       ),
       thisMonthDayBorderColor: Theme.of(context).disabledColor,
       weekFormat: false,
@@ -156,9 +164,17 @@ class _CalendarState extends State<Calendar> {
         });
       },
       onDayLongPressed: (DateTime date) {
-        if (kDebugMode) {
-          print('long pressed date $date');
-        }
+        // _saveDay(date);
+        // print(date);
+
+        setState(() {
+          _markedDateMap.add(
+              date,
+              Event(
+                date: date,
+              ));
+          print(date);
+        });
       },
       selectedDayButtonColor: const Color.fromRGBO(155, 22, 61, 1),
       selectedDayBorderColor: Theme.of(context).primaryColor,
@@ -167,7 +183,7 @@ class _CalendarState extends State<Calendar> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Calendar'),
+        title: const Text('Calendário'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,9 +250,9 @@ class _CalendarState extends State<Calendar> {
                     bottom: BorderSide(color: Colors.black, width: 1.2))),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
               child: _calendarCarouselNoHeader,
               decoration: const BoxDecoration(
                   border: Border(
@@ -244,7 +260,7 @@ class _CalendarState extends State<Calendar> {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
@@ -257,10 +273,12 @@ class _CalendarState extends State<Calendar> {
                       _remove(index);
                     },
                     child: Card(
+                      color: Theme.of(context).cardColor,
+                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
                       child: ListTile(
-                          title: Text(item.date!, style: const TextStyle(color: Colors.black),
+                          title: Text(item.date!, style: TextStyle(color:Theme.of(context).primaryColor),
                           ),
-                        subtitle: Text(item.content!),
+                        subtitle: Text(item.content!, style: TextStyle(color:Theme.of(context).primaryColor),),
                         leading: Image.asset('assets/image/openbox.png',width: 50,height: 50,),
                         // leading:  IconButton(color: Colors.green, onPressed:(){}, icon: const Icon(Icons.calendar_today_sharp),),
                         trailing: IconButton(onPressed: () => _remove(index),

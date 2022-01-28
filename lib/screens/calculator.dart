@@ -7,7 +7,6 @@ class Calculator extends StatelessWidget {
   Calculator({Key? key}) : super(key: key);
 
   final controller = Get.put(HomeController());
-  final Color color = const Color.fromRGBO(198, 45, 91, 1);
 
   @override
   Widget build(BuildContext context) {
@@ -42,40 +41,40 @@ class Calculator extends StatelessWidget {
                   children:  [
                     TableRow(
                         children:[
-                          BuildButton(buttonText: "C", buttonHeight: 1, buttonColor: color),
-                          BuildButton(buttonText: "⌫", buttonHeight: 1, buttonColor: color),
-                          BuildButton(buttonText: "÷", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: "C", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
+                          BuildButton(buttonText: "⌫", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
+                          BuildButton(buttonText: "÷", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
                         ]
                     ),
 
                     TableRow(
                         children:[
-                          BuildButton(buttonText: "7", buttonHeight: 1, buttonColor: color),
-                          BuildButton(buttonText: "8", buttonHeight: 1, buttonColor: color),
-                          BuildButton(buttonText: "9", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: "7", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
+                          BuildButton(buttonText: "8", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
+                          BuildButton(buttonText: "9", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
                         ]
                     ),
 
                     TableRow(
                         children:[
-                          BuildButton(buttonText: "4", buttonHeight: 1, buttonColor: color),
-                          BuildButton(buttonText: "5", buttonHeight: 1, buttonColor: color),
-                          BuildButton(buttonText: "6", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: "4", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
+                          BuildButton(buttonText: "5", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
+                          BuildButton(buttonText: "6", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
                         ]
                     ),
 
                     TableRow(
                         children:[
-                          BuildButton(buttonText: "1", buttonHeight: 1, buttonColor: color),
-                          BuildButton(buttonText: "2", buttonHeight: 1, buttonColor: color),
-                          BuildButton(buttonText: "3", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: "1", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
+                          BuildButton(buttonText: "2", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
+                          BuildButton(buttonText: "3", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
                         ]
                     ),
                     TableRow(
                         children:[
-                          BuildButton(buttonText: ".", buttonHeight: 1, buttonColor: color),
-                          BuildButton(buttonText: "0", buttonHeight: 1, buttonColor: color),
-                          BuildButton(buttonText: "00", buttonHeight: 1, buttonColor: color),
+                          BuildButton(buttonText: ".", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
+                          BuildButton(buttonText: "0", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
+                          BuildButton(buttonText: "00", buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
                         ]
                     ),
                   ],
@@ -88,19 +87,19 @@ class Calculator extends StatelessWidget {
                 child: Table(
                   children: [
                     TableRow(
-                        children:[ BuildButton(buttonText: '×', buttonHeight: 1, buttonColor: color,)
+                        children:[ BuildButton(buttonText: '×', buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor,)
                         ]),
 
                     TableRow(
-                        children:[ BuildButton(buttonText: '-', buttonHeight: 1, buttonColor: color),
+                        children:[ BuildButton(buttonText: '-', buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
                         ]),
 
                     TableRow(
-                        children:[ BuildButton(buttonText: '+', buttonHeight: 1, buttonColor: color),
+                        children:[ BuildButton(buttonText: '+', buttonHeight: 1, buttonColor: Theme.of(context).secondaryHeaderColor),
                         ]),
 
                     TableRow(
-                        children:[ BuildButton(buttonText: '=', buttonHeight: 2, buttonColor: color),
+                        children:[ BuildButton(buttonText: '=', buttonHeight: 2, buttonColor: Theme.of(context).secondaryHeaderColor),
                         ]),
 
                   ],

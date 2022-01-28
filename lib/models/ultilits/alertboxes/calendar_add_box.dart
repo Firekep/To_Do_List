@@ -28,8 +28,10 @@ class _CalendarAddState extends State<CalendarAdd> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
+      backgroundColor: Theme.of(context).cardColor,
+      title: Text(
         'Adcionando um lembrete',
+        style: TextStyle(color: Theme.of(context).primaryColor),
         textAlign: TextAlign.center,
       ),
       content: Column(

@@ -18,7 +18,7 @@ class Input extends StatelessWidget {
       controller: controller,
       autocorrect: true,
       enableSuggestions: false,
-      style: Theme.of(context).textTheme.bodyText1,
+      style: TextStyle(color:Theme.of(context).primaryColor,fontSize: 18),
       decoration: InputDecoration(
         labelText: label,
         hintText: hintText,

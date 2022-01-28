@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list/database/item.dart';
-import 'package:to_do_list/models/ultilits/alertboxes/add_alertbox.dart';
-import 'package:to_do_list/models/ultilits/alertboxes/info_alert.box.dart';
+import 'package:to_do_list/models/ultilits/alertboxes/listview_add_box.dart';
+import 'package:to_do_list/models/ultilits/alertboxes/listview_delete_info_box.dart';
+import 'package:to_do_list/models/ultilits/alertboxes/listview_info_box.dart';
 import 'package:to_do_list/models/ultilits/buttons/floating.button.dart';
 
 class Listview extends StatefulWidget {
@@ -39,11 +40,11 @@ class _ListviewState extends State<Listview> {
             child: CheckboxListTile(
               title: Text(
                 item.title!,
-                style: TextStyle(color: Theme.of(context).backgroundColor),
+                style: TextStyle(color: Theme.of(context).backgroundColor,fontSize: 18),
               ),
               subtitle: Text(
                 item.content!,
-                style: (Theme.of(context).textTheme.bodyText1),
+                style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15),
               ),
               onChanged: (value) {
                 setState(
@@ -98,22 +99,7 @@ class _ListviewState extends State<Listview> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text(
-                'Por favor, selecione ao menos um item para ser deletado.'),
-            actions: [
-              OutlinedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text(
-                  'OK',
-                  style: TextStyle(color:Colors.red),
-                ),
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Colors.transparent),
-                ),
-              )
-            ],
-          );
+          return const DeleteInfoBox();
         },
       );
       return; // para a execução do código

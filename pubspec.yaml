@@ -15,7 +15,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  shared_preferences: ^2.0.11
+  shared_preferences: ^2.0.12
   auto_size_text: ^3.0.0
   math_expressions: ^2.3.0
   get: ^4.6.1
@@ -45,6 +45,7 @@ flutter:
     - assets/image/main.png
     - assets/image/openbox.png
     - assets/image/present.gif
+    - assets/image/interrogation.png
 
   uses-material-design: true
 
