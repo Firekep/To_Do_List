@@ -11,17 +11,16 @@ class Calculator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Calculadora'),
-        centerTitle: true,
-      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Obx(() =>  Container(
             alignment: Alignment.centerRight,
             padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
-            child: Text(controller.equation.value, style:TextStyle(fontSize: controller.equationFontSize.value),),
+            child: Text(controller.equation.value,
+              style:TextStyle(
+                  fontSize: controller.equationFontSize.value)
+              ,),
           )),
 
           Obx(() => Container(

@@ -19,7 +19,7 @@ class SlideSwitch extends StatelessWidget {
       children: [
         if (text != null)
           Text(
-            text!,
+            text!,style: TextStyle(color: Theme.of(context).primaryColor),
           ),
         Switch(
           value: value,

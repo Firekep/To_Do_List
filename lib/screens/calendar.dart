@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list/database/calendar_items.dart';
 import 'package:to_do_list/models/ultilits/alertboxes/calendar_add_box.dart';
-import 'package:to_do_list/models/ultilits/buttons/app_bar.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({Key? key}) : super(key: key);
@@ -173,7 +172,6 @@ class _CalendarState extends State<Calendar> {
               Event(
                 date: date,
               ));
-          print(date);
         });
       },
       selectedDayButtonColor: const Color.fromRGBO(155, 22, 61, 1),
@@ -181,9 +179,19 @@ class _CalendarState extends State<Calendar> {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Calendário'),
+      floatingActionButton: RawMaterialButton(
+        autofocus: false,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onPressed: _add,
+        elevation: 2.0,
+        fillColor: Theme.of(context).shadowColor,
+        child: const Icon(
+          Icons.add_alert_outlined,
+          size: 25.0,
+        ),
+        padding: const EdgeInsets.all(15.0),
+        shape: const CircleBorder(),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -301,12 +309,6 @@ class _CalendarState extends State<Calendar> {
                 }),
           ),
         ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Theme.of(context).shadowColor,
-        child: AppBottomBar(
-          onPressed: () => _add(),
-        ),
       ),
     );
   }

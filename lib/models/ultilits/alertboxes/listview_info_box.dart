@@ -44,7 +44,7 @@ class _InfoBoxState extends State<InfoBox> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 20.0),
             child: Text(
-              '-Caso queira trocar o tema da aplicação aperte no botão superior esquerdo, em seguida "tema".',
+              '-Caso queira trocar o tema da aplicação, aperte no botão superior esquerdo, em seguida "tema".',
               style: TextStyle(color: Theme.of(context).primaryColor),
             ),
           ),

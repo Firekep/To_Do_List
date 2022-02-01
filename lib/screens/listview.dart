@@ -27,10 +27,6 @@ class _ListviewState extends State<Listview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("My Notes"),
-      ),
       body: ListView.builder(
       itemCount: _items.length,
       itemBuilder: (context, index) {
@@ -42,10 +38,16 @@ class _ListviewState extends State<Listview> {
                 item.title!,
                 style: TextStyle(color: Theme.of(context).backgroundColor,fontSize: 18),
               ),
+              secondary:  IconButton(
+                onPressed: (){},
+                icon: const Icon(Icons.edit),
+                color: Colors.green,
+              ),
               subtitle: Text(
                 item.content!,
                 style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15),
               ),
+              controlAffinity: ListTileControlAffinity.leading,
               onChanged: (value) {
                 setState(
                       () {
@@ -85,6 +87,7 @@ class _ListviewState extends State<Listview> {
       ),
     );
   }
+
 
   void _deleteCheckedItems() async {
     List<Item> _checkedItems = [];

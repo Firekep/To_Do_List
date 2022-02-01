@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:to_do_list/providers/app_theme.dart';
-import 'package:to_do_list/screens/app_home.dart';
+import 'package:to_do_list/screens/principal_view.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'models/providers/app_theme.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
