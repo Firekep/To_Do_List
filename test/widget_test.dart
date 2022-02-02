@@ -29,23 +29,4 @@ void main() {
   });
 }
 
-//child: Column(
-//           children: [
-//             const Spacement(height: 150),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 Text(
-//                   'Escolha uma função:',
-//                   style: TextStyle(
-//                       fontSize: 25, color: Theme.of(context).primaryColor),
-//                 ),
-//               ],
-//             ),
-//             const Spacement(height: 100),
-//           const AppHomeButtons(),
-//             Center(
-//               child: Image.asset('assets/image/main.png',width: 150,height: 150,),
-//             ),
-//           ],
-//         ),
+//  flutter build apk --split-per-abi

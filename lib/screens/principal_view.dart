@@ -53,7 +53,7 @@ class _AppHomeState extends State<AppHome> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.white,
-        selectedItemColor: Colors.green,
+        selectedItemColor: Theme.of(context).splashColor,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.list_alt_outlined), label: 'Listview'),

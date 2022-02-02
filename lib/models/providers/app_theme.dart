@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData get lightTheme{
     return ThemeData(
+      splashColor: const Color.fromRGBO(220, 159, 178, 1.0), //Color icon bottom bar
       canvasColor: const Color.fromRGBO(155, 22, 61, 1),
       cardColor: Colors.white,
       backgroundColor: Colors.redAccent, //Dismissible Container
@@ -43,6 +44,7 @@ class AppTheme {
   }
   static ThemeData get darkTheme{
     return ThemeData(
+      splashColor: Colors.deepOrange, //Color icon bottom bar
       canvasColor: Colors.grey[900],// NavegatorAppBar
       cardColor: Colors.blueGrey[800],
       backgroundColor: Colors.lightBlue,// Dismissible color

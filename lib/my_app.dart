@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list/screens/principal_view.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -27,6 +28,10 @@ class _MyAppState extends State<MyApp> {
     return ValueListenableBuilder<ThemeMode>(
       valueListenable: notifier,
       builder: (_, mode, __) {
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+        ]);
         return MaterialApp(
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
@@ -61,9 +66,11 @@ class _MyAppState extends State<MyApp> {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isDarkTheme', isDarkTheme);
-    } catch (error){ if (kDebugMode) {
-      print('Theme');
-    }}
+    } catch (error) {
+      if (kDebugMode) {
+        print('Theme');
+      }
+    }
   }
 
   Future _load() async {

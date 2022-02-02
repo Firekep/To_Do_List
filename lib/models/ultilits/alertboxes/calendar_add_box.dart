@@ -13,17 +13,8 @@ class CalendarAdd extends StatefulWidget {
 class _CalendarAddState extends State<CalendarAdd> {
   final _contentCtrl = TextEditingController();
   final keyboard = TextInputType.visiblePassword;
-  DateTime? selectedDate;
+  DateTime selectedDate = DateTime.now();
   final myController = TextEditingController();
-
-  String getText() {
-    if (selectedDate == null) {
-      return 'Selecione uma data';
-    } else {
-      return DateFormat('dd/MM/yyyy').format(selectedDate!);
-      // return '${selectedDate.month}/${selectedDate.day}/${selectedDate.year}';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +34,8 @@ class _CalendarAddState extends State<CalendarAdd> {
               side: const BorderSide(color: Colors.redAccent),
             ),
             child: Text(
-              getText(),style: TextStyle(color: Theme.of(context).primaryColor),
+              DateFormat('dd/MM/yyyy').format(selectedDate),
+              style: TextStyle(color: Theme.of(context).primaryColor),
             ),
           ),
           Input(
@@ -80,7 +72,11 @@ class _CalendarAddState extends State<CalendarAdd> {
           ],
         ),
         Center(
-          child: Image.asset('assets/image/present.gif',width: 150,height: 150,),
+          child: Image.asset(
+            'assets/image/present.gif',
+            width: 150,
+            height: 150,
+          ),
         ),
       ],
     );
@@ -88,24 +84,24 @@ class _CalendarAddState extends State<CalendarAdd> {
 
   void _submit() {
     final content = _contentCtrl.text;
-    final data = getText().toString();
 
-    if (content.isNotEmpty && data.isNotEmpty) {
+    if (content.isNotEmpty) {
       final item = CalendarItem(
         content: content,
-        date : data,
+        date: selectedDate,
       );
       Navigator.of(context).pop(item);
     }
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final initialDate = DateTime.now();
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate ?? initialDate,
-        firstDate: DateTime(2001, 8),
-        lastDate: DateTime(2101));
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2001, 8),
+      lastDate: DateTime(2101),
+    );
+
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;

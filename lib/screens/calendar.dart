@@ -29,10 +29,6 @@ class _CalendarState extends State<Calendar> {
         color: Colors.white,
         borderRadius: const BorderRadius.all(Radius.circular(1000)),
         border: Border.all(color: Colors.blue, width: 2.0)),
-    child: const Icon(
-      Icons.person,
-      color: Colors.amber,
-    ),
   );
 
   final EventList<Event> _markedDateMap = EventList<Event>(
@@ -58,52 +54,19 @@ class _CalendarState extends State<Calendar> {
   );
 
   @override
-  void didChangeDependencies() {
-    _load();
+  void didChangeDependencies() async {
     super.didChangeDependencies();
   }
 
   @override
   void initState() {
     _load();
-    _markedDateMap.add(
-        DateTime(2022, 5, 24),
-        Event(
-          date: DateTime(2022, 5, 24),
-          title: 'Event 5',
-          icon: _eventIcon,
-        ));
-
-    _markedDateMap.add(
-        DateTime(2022, 5, 15),
-        Event(
-          date: DateTime(2022, 5, 15),
-          title: 'Event 4',
-          icon: _eventIcon,
-        ));
-
-    _markedDateMap.add(
-        DateTime(2022, 11, 7),
-        Event(
-          date: DateTime(2022, 11, 7),
-          title: 'Event 4',
-          icon: _eventIcon,
-        ));
-
-    _markedDateMap.add(
-        DateTime(2022, 11, 7),
-        Event(
-          date: DateTime(2022, 11, 7),
-          title: 'Event 4',
-          icon: _eventIcon,
-        ));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
-      todayBorderColor: Theme.of(context).primaryColor,
       onDayPressed: (DateTime date, List<Event> events) {
         setState(() => _currentDate2 = date);
         for (var event in events) {
@@ -138,23 +101,12 @@ class _CalendarState extends State<Calendar> {
         color: Colors.white,
       ),
       showHeader: false,
-      todayTextStyle: const TextStyle(
-        color: Colors.white,
-      ),
 
-      todayButtonColor: Theme.of(context).backgroundColor,
-      selectedDayTextStyle: const TextStyle(
-        color: Colors.white,
-      ),
       minSelectedDate: _currentDate.subtract(const Duration(days: 360)),
       maxSelectedDate: _currentDate.add(const Duration(days: 360)),
       prevDaysTextStyle: const TextStyle(
         fontSize: 16,
         color: Colors.black,
-      ),
-      inactiveDaysTextStyle: const TextStyle(
-        color: Colors.tealAccent,
-        fontSize: 16,
       ),
       onCalendarChanged: (DateTime date) {
         setState(() {
@@ -167,13 +119,17 @@ class _CalendarState extends State<Calendar> {
         // print(date);
 
         setState(() {
-          _markedDateMap.add(
-              date,
-              Event(
-                date: date,
-              ));
+          _markedDateMap.add(date, Event(date: date));
         });
       },
+      todayTextStyle: const TextStyle(
+        color: Colors.white,
+      ),
+      todayBorderColor: Theme.of(context).primaryColor,
+      todayButtonColor: Theme.of(context).backgroundColor,
+      selectedDayTextStyle: const TextStyle(
+        color: Colors.white,
+      ),
       selectedDayButtonColor: const Color.fromRGBO(155, 22, 61, 1),
       selectedDayBorderColor: Theme.of(context).primaryColor,
     );
@@ -225,8 +181,7 @@ class _CalendarState extends State<Calendar> {
                     setState(() {
                       _targetDateTime = DateTime(
                           _targetDateTime.year, _targetDateTime.month - 1);
-                      _currentMonth =
-                          DateFormat.yMMM().format(_targetDateTime);
+                      _currentMonth = DateFormat.yMMM().format(_targetDateTime);
                     });
                   },
                   style: OutlinedButton.styleFrom(
@@ -235,8 +190,7 @@ class _CalendarState extends State<Calendar> {
                 ),
                 OutlinedButton(
                   child: Text('Seguinte',
-                      style:
-                          TextStyle(color: Theme.of(context).primaryColor)),
+                      style: TextStyle(color: Theme.of(context).primaryColor)),
                   onPressed: () {
                     setState(
                       () {
@@ -276,21 +230,34 @@ class _CalendarState extends State<Calendar> {
                 itemBuilder: (context, index) {
                   final item = _items[index];
                   return Dismissible(
-                    key: Key(item.content!),
+                    key: Key(item.content ?? json.encode(item)),
                     onDismissed: (direction) {
                       _remove(index);
                     },
                     child: Card(
                       color: Theme.of(context).cardColor,
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 2),
                       child: ListTile(
-                          title: Text(item.date!, style: TextStyle(color:Theme.of(context).primaryColor),
-                          ),
-                        subtitle: Text(item.content!, style: TextStyle(color:Theme.of(context).primaryColor),),
-                        leading: Image.asset('assets/image/openbox.png',width: 50,height: 50,),
+                        title: Text(
+                          DateFormat('dd/MM/yyyy').format(item.date),
+                          style:
+                              TextStyle(color: Theme.of(context).primaryColor),
+                        ),
+                        subtitle: Text(
+                          item.content ?? '',
+                          style:
+                              TextStyle(color: Theme.of(context).primaryColor),
+                        ),
+                        leading: Image.asset(
+                          'assets/image/openbox.png',
+                          width: 50,
+                          height: 50,
+                        ),
                         // leading:  IconButton(color: Colors.green, onPressed:(){}, icon: const Icon(Icons.calendar_today_sharp),),
-                        trailing: IconButton(onPressed: () => _remove(index),
-                            icon: const Icon(Icons.delete_forever_rounded),
+                        trailing: IconButton(
+                          onPressed: () => _remove(index),
+                          icon: const Icon(Icons.delete_forever_rounded),
                           color: Colors.red,
                         ),
                       ),
@@ -315,17 +282,18 @@ class _CalendarState extends State<Calendar> {
 
   Future<void> _save() async {
     var prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-      'calendar',
-      jsonEncode(_items),
-    );
+
+    final String encodedData = CalendarItem.encode(_items);
+
+    await prefs.setString('calendar', encodedData);
   }
 
-  void _remove(int index) {
+  void _remove(int index) async {
     setState(() {
       _items.removeAt(index);
-      _save();
     });
+
+    await _save();
   }
 
   Future<void> _add() async {
@@ -339,26 +307,28 @@ class _CalendarState extends State<Calendar> {
         _items.add(response);
       });
 
-      var prefs = await SharedPreferences.getInstance();
-      await prefs.setString(
-        'calendar',
-        jsonEncode(_items),
-      );
+      await _save();
     }
   }
 
   Future _load() async {
     var prefs = await SharedPreferences.getInstance();
-    var data = prefs.getString('calendar');
+    var calendarItemStringList = await prefs.getString('calendar');
 
-    if (data != null) {
-      Iterable decoded = jsonDecode(data);
-      List<CalendarItem> result = decoded.map((x) {
-        return CalendarItem.fromJson(x);
-      }).toList();
+    if (calendarItemStringList != null) {
+      List<CalendarItem> result = CalendarItem.decode(calendarItemStringList);
+
+      print('result: ${result}');
+
       setState(() {
         _items = result;
       });
+
+      for (var element in result) {
+        setState(() {
+          _markedDateMap.add(element.date, Event(date: element.date));
+        });
+      }
     }
   }
 }

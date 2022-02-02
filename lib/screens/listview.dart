@@ -6,6 +6,7 @@ import 'package:to_do_list/models/ultilits/alertboxes/listview_add_box.dart';
 import 'package:to_do_list/models/ultilits/alertboxes/listview_delete_info_box.dart';
 import 'package:to_do_list/models/ultilits/alertboxes/listview_info_box.dart';
 import 'package:to_do_list/models/ultilits/buttons/floating.button.dart';
+import 'package:favorite_button/favorite_button.dart';
 
 class Listview extends StatefulWidget {
   const Listview({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class Listview extends StatefulWidget {
 
 class _ListviewState extends State<Listview> {
   List<Item> _items = [];
+  final List<Item> _favoriteItem = [];
   final newTaskCrtl = TextEditingController();
 
   @override
@@ -38,10 +40,14 @@ class _ListviewState extends State<Listview> {
                 item.title!,
                 style: TextStyle(color: Theme.of(context).backgroundColor,fontSize: 18),
               ),
-              secondary:  IconButton(
-                onPressed: (){},
-                icon: const Icon(Icons.edit),
-                color: Colors.green,
+              secondary:  StarButton(
+                iconColor: Theme.of(context).splashColor,
+                iconSize: 35,
+                isStarred: item.favorite,
+                valueChanged: (value){
+                  item.favorite = value!;
+                  _save();
+                },
               ),
               subtitle: Text(
                 item.content!,
@@ -53,6 +59,7 @@ class _ListviewState extends State<Listview> {
                       () {
                     item.done = value!;
                     _save();
+                    _favoriteItems();
                   },
                 );
               },
@@ -115,6 +122,15 @@ class _ListviewState extends State<Listview> {
     });
 
     await _save();
+  }
+
+  void _favoriteItems() async{
+
+    for(var item in _items){
+      bool isFavorite = item.favorite == true;
+
+      if (isFavorite) _favoriteItem.add(item);
+    }
   }
 
   void _showDialog() {
