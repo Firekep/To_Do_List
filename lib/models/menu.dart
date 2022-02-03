@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list/models/slide.switch.dart';
+import 'package:to_do_list/models/ultilits/Spacement/spacement.dart';
 
 class Menu extends StatefulWidget {
   final void Function(bool value) onChangeTheme;
@@ -25,14 +26,20 @@ class _MenuState extends State<Menu> {
         PopupMenuItem(
           child: StatefulBuilder(
             builder: (context, setState) {
-              return SlideSwitch(
-                text: 'Tema',
-                value: widget.isLightTheme,
-                onChange: (value) {
-                  setState(() {
-                    widget.onChangeTheme(value);
-                  });
-                },
+              return Column(
+                children: [
+                  SlideSwitch(
+                    text: 'Tema',
+                    value: widget.isLightTheme,
+                    onChange: (value) {
+                      setState(() {
+                        widget.onChangeTheme(value);
+                      });
+                    },
+                  ),
+                  const Spacement(height: 10),
+                  const Text('Versão: 3.0.0.5')
+                ],
               );
             },
           ),
