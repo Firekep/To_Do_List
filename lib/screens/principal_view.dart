@@ -43,6 +43,7 @@ class _AppHomeState extends State<AppHome> {
         ),
       ),
       body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
         children: _pages,
         onPageChanged: (index){
           setState(() {
