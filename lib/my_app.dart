@@ -29,8 +29,8 @@ class _MyAppState extends State<MyApp> {
       valueListenable: notifier,
       builder: (_, mode, __) {
         SystemChrome.setPreferredOrientations([
-          DeviceOrientation.portraitUp,
-          DeviceOrientation.portraitDown,
+          // DeviceOrientation.portraitUp,
+          // DeviceOrientation.portraitDown,
         ]);
         return MaterialApp(
           localizationsDelegates: const [

@@ -15,7 +15,7 @@ class Calendar extends StatefulWidget {
   _CalendarState createState() => _CalendarState();
 }
 
-class _CalendarState extends State<Calendar> {
+class _CalendarState extends State<Calendar> with SingleTickerProviderStateMixin{
   List<CalendarItem> _items = [];
   final DateTime _currentDate = DateTime.now();
   DateTime _currentDate2 = DateTime.now();
@@ -53,14 +53,51 @@ class _CalendarState extends State<Calendar> {
     },
   );
 
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-  }
+  Future<void>? _futureLoad;
+
+  // @override
+  // void didChangeDependencies() {
+  //   _load();
+  //   super.didChangeDependencies();
+  // }
 
   @override
   void initState() {
     _load();
+    _markedDateMap.add(
+        DateTime(2022, 5, 24),
+        Event(
+          date: DateTime(2022, 5, 24),
+          title: 'Event 5',
+          icon: _eventIcon,
+        ));
+
+    _markedDateMap.add(
+        DateTime(2022, 5, 15),
+        Event(
+          date: DateTime(2022, 5, 15),
+          title: 'Event 4',
+          icon: _eventIcon,
+        ));
+
+    _markedDateMap.add(
+        DateTime(2022, 11, 7),
+        Event(
+          date: DateTime(2022, 11, 7),
+          title: 'Event 4',
+          icon: _eventIcon,
+        ));
+
+    _markedDateMap.add(
+      DateTime(2022, 11, 7),
+      Event(
+        date: DateTime(2022, 11, 7),
+        title: 'Event 4',
+        icon: _eventIcon,
+      ),
+    );
+
+    _futureLoad = _load();
     super.initState();
   }
 
@@ -88,26 +125,14 @@ class _CalendarState extends State<Calendar> {
       ),
       thisMonthDayBorderColor: Theme.of(context).disabledColor,
       weekFormat: false,
-//      firstDayOfWeek: 4,
       markedDatesMap: _markedDateMap,
       height: 420.0,
       selectedDateTime: _currentDate2,
       targetDateTime: _targetDateTime,
       customGridViewPhysics: const NeverScrollableScrollPhysics(),
-      markedDateCustomShapeBorder:
-          const CircleBorder(side: BorderSide(color: Colors.blue)),
-      markedDateCustomTextStyle: const TextStyle(
-        fontSize: 18,
-        color: Colors.white,
-      ),
       showHeader: false,
-
       minSelectedDate: _currentDate.subtract(const Duration(days: 360)),
       maxSelectedDate: _currentDate.add(const Duration(days: 360)),
-      prevDaysTextStyle: const TextStyle(
-        fontSize: 16,
-        color: Colors.black,
-      ),
       onCalendarChanged: (DateTime date) {
         setState(() {
           _targetDateTime = date;
@@ -115,8 +140,6 @@ class _CalendarState extends State<Calendar> {
         });
       },
       onDayLongPressed: (DateTime date) {
-        // _saveDay(date);
-        // print(date);
 
         setState(() {
           _markedDateMap.add(date, Event(date: date));
@@ -132,171 +155,190 @@ class _CalendarState extends State<Calendar> {
       ),
       selectedDayButtonColor: const Color.fromRGBO(155, 22, 61, 1),
       selectedDayBorderColor: Theme.of(context).primaryColor,
+
+      markedDateCustomShapeBorder: const CircleBorder(side: BorderSide(color: Colors.black)),
+      markedDateCustomTextStyle: const TextStyle(
+        fontSize: 20,
+      ),
     );
 
     return Scaffold(
-      floatingActionButton: RawMaterialButton(
+      floatingActionButton: FloatingActionButton(
         autofocus: false,
         splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        onPressed: _add,
+        onPressed: _addItemToList,
         elevation: 2.0,
-        fillColor: Theme.of(context).shadowColor,
+        backgroundColor: Theme.of(context).shadowColor,
         child: const Icon(
           Icons.add_alert_outlined,
           size: 25.0,
         ),
-        padding: const EdgeInsets.all(15.0),
+        // padding: const EdgeInsets.all(15.0),
         shape: const CircleBorder(),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          //custom icon
+      body: FutureBuilder(
+          future: _futureLoad,
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return const Text('none');
+              case ConnectionState.waiting:
+                return const Center(
+                    child: CircularProgressIndicator(),
+                );
+              case ConnectionState.active:
+              case ConnectionState.done:
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    //custom icon
 
-          Container(
-            margin: const EdgeInsets.only(
-              top: 30.0,
-              bottom: 16.0,
-              left: 16.0,
-              right: 16.0,
-            ),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                    child: Text(
-                  _currentMonth,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24.0,
-                  ),
-                )),
-                OutlinedButton(
-                  child: Text(
-                    'Anterior',
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _targetDateTime = DateTime(
-                          _targetDateTime.year, _targetDateTime.month - 1);
-                      _currentMonth = DateFormat.yMMM().format(_targetDateTime);
-                    });
-                  },
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.transparent),
-                  ),
-                ),
-                OutlinedButton(
-                  child: Text('Seguinte',
-                      style: TextStyle(color: Theme.of(context).primaryColor)),
-                  onPressed: () {
-                    setState(
-                      () {
-                        _targetDateTime = DateTime(
-                            _targetDateTime.year, _targetDateTime.month + 1);
-                        _currentMonth =
-                            DateFormat.yMMM().format(_targetDateTime);
-                      },
-                    );
-                  },
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.transparent),
-                  ),
-                ),
-              ],
-            ),
-            decoration: const BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(color: Colors.black, width: 1.2))),
-          ),
-          Expanded(
-            flex: 3,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
-              child: _calendarCarouselNoHeader,
-              decoration: const BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(color: Colors.black, width: 1.2))),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: _items.length,
-                itemBuilder: (context, index) {
-                  final item = _items[index];
-                  return Dismissible(
-                    key: Key(item.content ?? json.encode(item)),
-                    onDismissed: (direction) {
-                      _remove(index);
-                    },
-                    child: Card(
-                      color: Theme.of(context).cardColor,
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 2),
-                      child: ListTile(
-                        title: Text(
-                          DateFormat('dd/MM/yyyy').format(item.date),
-                          style:
-                              TextStyle(color: Theme.of(context).primaryColor),
-                        ),
-                        subtitle: Text(
-                          item.content ?? '',
-                          style:
-                              TextStyle(color: Theme.of(context).primaryColor),
-                        ),
-                        leading: Image.asset(
-                          'assets/image/openbox.png',
-                          width: 50,
-                          height: 50,
-                        ),
-                        // leading:  IconButton(color: Colors.green, onPressed:(){}, icon: const Icon(Icons.calendar_today_sharp),),
-                        trailing: IconButton(
-                          onPressed: () => _remove(index),
-                          icon: const Icon(Icons.delete_forever_rounded),
-                          color: Colors.red,
-                        ),
+                    Container(
+                      margin: const EdgeInsets.only(
+                        top: 30.0,
+                        bottom: 16.0,
+                        left: 16.0,
+                        right: 16.0,
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                              child: Text(
+                            _currentMonth,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24.0,
+                            ),
+                          )),
+                          OutlinedButton(
+                            child: Text(
+                              'Anterior',
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _targetDateTime = DateTime(_targetDateTime.year,
+                                    _targetDateTime.month - 1);
+                                _currentMonth =
+                                    DateFormat.yMMM().format(_targetDateTime);
+                              });
+                            },
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.transparent),
+                            ),
+                          ),
+                          OutlinedButton(
+                            child: Text('Seguinte',
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor)),
+                            onPressed: () {
+                              setState(
+                                () {
+                                  _targetDateTime = DateTime(
+                                      _targetDateTime.year,
+                                      _targetDateTime.month + 1);
+                                  _currentMonth =
+                                      DateFormat.yMMM().format(_targetDateTime);
+                                },
+                              );
+                            },
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.transparent),
+                            ),
+                          ),
+                        ],
+                      ),
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(color: Colors.black, width: 1.2))),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 0),
+                        child: _calendarCarouselNoHeader,
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: Colors.black, width: 1.2))),
                       ),
                     ),
-                    background: Container(
-                        child: const Icon(Icons.arrow_forward_outlined),
-                        color: Theme.of(context).backgroundColor),
-                    secondaryBackground: Container(
-                      child: const Icon(
-                        Icons.arrow_back_outlined,
-                        size: 25,
-                      ),
-                      color: Theme.of(context).backgroundColor,
+                    Expanded(
+                      flex: 2,
+                      child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: _items.length,
+                          itemBuilder: (context, index) {
+                            final item = _items[index];
+                            return Dismissible(
+                              key: Key(item.content ?? json.encode(item)),
+                              onDismissed: (direction) {
+                                _removeItemList(index);
+                              },
+                              child: Card(
+                                color: Theme.of(context).cardColor,
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 2),
+                                child: ListTile(
+                                  title: Text(
+                                    DateFormat('dd/MM/yyyy').format(item.date),
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor),
+                                  ),
+                                  subtitle: Text(
+                                    item.content ?? '',
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor),
+                                  ),
+                                  leading: Image.asset(
+                                    'assets/image/openbox.png',
+                                    width: 50,
+                                    height: 50,
+                                  ),
+                                  // leading:  IconButton(color: Colors.green, onPressed:(){}, icon: const Icon(Icons.calendar_today_sharp),),
+                                  trailing: IconButton(
+                                    onPressed: () => _removeItemList(index),
+                                    icon: const Icon(
+                                        Icons.delete_forever_rounded),
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                              background: Container(
+                                  child:
+                                      const Icon(Icons.arrow_forward_outlined),
+                                  color: Theme.of(context).backgroundColor),
+                              secondaryBackground: Container(
+                                child: const Icon(
+                                  Icons.arrow_back_outlined,
+                                  size: 25,
+                                ),
+                                color: Theme.of(context).backgroundColor,
+                              ),
+                            );
+                          }),
                     ),
-                  );
-                }),
-          ),
-        ],
-      ),
+                  ],
+                );
+            }
+          }),
     );
   }
 
-  Future<void> _save() async {
-    var prefs = await SharedPreferences.getInstance();
-
-    final String encodedData = CalendarItem.encode(_items);
-
-    await prefs.setString('calendar', encodedData);
-  }
-
-  void _remove(int index) async {
+  void _removeItemList(int index) async {
     setState(() {
       _items.removeAt(index);
     });
 
-    await _save();
+    await _saveCurrentChanges();
   }
 
-  Future<void> _add() async {
+  Future<void> _addItemToList() async {
     final response = await showDialog(
       context: context,
       builder: (contextDialog) => const CalendarAdd(),
@@ -305,13 +347,15 @@ class _CalendarState extends State<Calendar> {
     if (response is CalendarItem) {
       setState(() {
         _items.add(response);
+        _markedDateMap.add(response.date, Event(date: response.date));
       });
 
-      await _save();
+      await _saveCurrentChanges();
     }
   }
 
   Future _load() async {
+    await Future.delayed(const Duration(microseconds: 1));
     var prefs = await SharedPreferences.getInstance();
     var calendarItemStringList = await prefs.getString('calendar');
 
@@ -330,5 +374,13 @@ class _CalendarState extends State<Calendar> {
         });
       }
     }
+  }
+
+  Future<void> _saveCurrentChanges() async {
+    var prefs = await SharedPreferences.getInstance();
+
+    final String encodedData = CalendarItem.encode(_items);
+
+    await prefs.setString('calendar', encodedData);
   }
 }

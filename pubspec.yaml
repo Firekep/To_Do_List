@@ -25,6 +25,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   favorite_button: ^0.0.4
+  rainbow_color: ^2.0.1
 
 
 

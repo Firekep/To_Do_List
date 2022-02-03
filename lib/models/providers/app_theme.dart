@@ -51,7 +51,7 @@ class AppTheme {
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.grey[900],),  //App Bar
       secondaryHeaderColor: Colors.grey[900], // Buttons Calculator
-      disabledColor: Colors.black, // Calendar circle border color
+      disabledColor: Colors.grey, // Calendar circle border color
       shadowColor: Colors.grey[900], // used to button theme
       focusColor: Colors.transparent,//Focus
       iconTheme: const IconThemeData(color: Colors.white),//Icon Color

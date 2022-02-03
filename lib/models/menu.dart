@@ -38,7 +38,7 @@ class _MenuState extends State<Menu> {
                     },
                   ),
                   const Spacement(height: 10),
-                  const Text('Versão: 3.0.0.5')
+                  Text('Versão: 3.0.0.5',style: TextStyle(color: Theme.of(context).primaryColor),)
                 ],
               );
             },
