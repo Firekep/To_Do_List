@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list/database/calendar_items.dart';
 import 'package:to_do_list/models/ultilits/alertboxes/calendar_add_box.dart';
+import 'package:to_do_list/models/ultilits/alertboxes/calendar_add_box_by_datetime.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({Key? key}) : super(key: key);
@@ -37,17 +38,21 @@ class _CalendarState extends State<Calendar> with SingleTickerProviderStateMixin
         Event(
           date: DateTime(2022, 5, 15),
           title: 'Event 1',
-          icon: _eventIcon,
+          icon: const Icon(Icons.add_a_photo_sharp),
         ),
+      ],
+      DateTime(2022, 5, 24): [
         Event(
           date: DateTime(2022, 5, 24),
-          title: 'Event 2',
-          icon: _eventIcon,
+          title: 'Event 1',
+          icon: const Icon(Icons.add_a_photo_sharp),
         ),
+      ],
+      DateTime(2022, 11, 7): [
         Event(
-          date: DateTime(2022, 11, 7),
-          title: 'Event 3',
-          icon: _eventIcon,
+          date: DateTime(2022, 5, 15),
+          title: 'Event 1',
+          icon: const Icon(Icons.add_a_photo_sharp),
         ),
       ],
     },
@@ -55,47 +60,9 @@ class _CalendarState extends State<Calendar> with SingleTickerProviderStateMixin
 
   Future<void>? _futureLoad;
 
-  // @override
-  // void didChangeDependencies() {
-  //   _load();
-  //   super.didChangeDependencies();
-  // }
-
   @override
   void initState() {
     _load();
-    _markedDateMap.add(
-        DateTime(2022, 5, 24),
-        Event(
-          date: DateTime(2022, 5, 24),
-          title: 'Event 5',
-          icon: _eventIcon,
-        ));
-
-    _markedDateMap.add(
-        DateTime(2022, 5, 15),
-        Event(
-          date: DateTime(2022, 5, 15),
-          title: 'Event 4',
-          icon: _eventIcon,
-        ));
-
-    _markedDateMap.add(
-        DateTime(2022, 11, 7),
-        Event(
-          date: DateTime(2022, 11, 7),
-          title: 'Event 4',
-          icon: _eventIcon,
-        ));
-
-    _markedDateMap.add(
-      DateTime(2022, 11, 7),
-      Event(
-        date: DateTime(2022, 11, 7),
-        title: 'Event 4',
-        icon: _eventIcon,
-      ),
-    );
 
     _futureLoad = _load();
     super.initState();
@@ -105,10 +72,12 @@ class _CalendarState extends State<Calendar> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
       onDayPressed: (DateTime date, List<Event> events) {
-        setState(() => _currentDate2 = date);
+        // setState(() => _currentDate2 = date);
+        setState(() {});
+
         for (var event in events) {
           if (kDebugMode) {
-            print(event.title);
+            print(_markedDateMap.events);
           }
         }
       },
@@ -140,9 +109,8 @@ class _CalendarState extends State<Calendar> with SingleTickerProviderStateMixin
         });
       },
       onDayLongPressed: (DateTime date) {
-
         setState(() {
-          _markedDateMap.add(date, Event(date: date));
+        _addItemToListByDateTime(date);
         });
       },
       todayTextStyle: const TextStyle(
@@ -156,7 +124,7 @@ class _CalendarState extends State<Calendar> with SingleTickerProviderStateMixin
       selectedDayButtonColor: const Color.fromRGBO(155, 22, 61, 1),
       selectedDayBorderColor: Theme.of(context).primaryColor,
 
-      markedDateCustomShapeBorder: const CircleBorder(side: BorderSide(color: Colors.black)),
+      markedDateCustomShapeBorder: const CircleBorder(side: BorderSide(color: Color.fromRGBO(0, 127, 255, 1))),
       markedDateCustomTextStyle: const TextStyle(
         fontSize: 20,
       ),
@@ -183,151 +151,154 @@ class _CalendarState extends State<Calendar> with SingleTickerProviderStateMixin
               case ConnectionState.none:
                 return const Text('none');
               case ConnectionState.waiting:
-                return const Center(
-                    child: CircularProgressIndicator(),
-                );
+                return Center(
+                    child: CircularProgressIndicator(color: Theme.of(context).backgroundColor,),);
               case ConnectionState.active:
               case ConnectionState.done:
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    //custom icon
-
-                    Container(
-                      margin: const EdgeInsets.only(
-                        top: 30.0,
-                        bottom: 16.0,
-                        left: 16.0,
-                        right: 16.0,
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                              child: Text(
-                            _currentMonth,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24.0,
-                            ),
-                          )),
-                          OutlinedButton(
-                            child: Text(
-                              'Anterior',
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _targetDateTime = DateTime(_targetDateTime.year,
-                                    _targetDateTime.month - 1);
-                                _currentMonth =
-                                    DateFormat.yMMM().format(_targetDateTime);
-                              });
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.transparent),
-                            ),
-                          ),
-                          OutlinedButton(
-                            child: Text('Seguinte',
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor)),
-                            onPressed: () {
-                              setState(
-                                () {
-                                  _targetDateTime = DateTime(
-                                      _targetDateTime.year,
-                                      _targetDateTime.month + 1);
-                                  _currentMonth =
-                                      DateFormat.yMMM().format(_targetDateTime);
-                                },
-                              );
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.transparent),
-                            ),
-                          ),
-                        ],
-                      ),
-                      decoration: const BoxDecoration(
-                          border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.black, width: 1.2))),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 0),
-                        child: _calendarCarouselNoHeader,
-                        decoration: const BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: Colors.black, width: 1.2))),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: _items.length,
-                          itemBuilder: (context, index) {
-                            final item = _items[index];
-                            return Dismissible(
-                              key: Key(item.content ?? json.encode(item)),
-                              onDismissed: (direction) {
-                                _removeItemList(index);
-                              },
-                              child: Card(
-                                color: Theme.of(context).cardColor,
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 2),
-                                child: ListTile(
-                                  title: Text(
-                                    DateFormat('dd/MM/yyyy').format(item.date),
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor),
-                                  ),
-                                  subtitle: Text(
-                                    item.content ?? '',
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor),
-                                  ),
-                                  leading: Image.asset(
-                                    'assets/image/openbox.png',
-                                    width: 50,
-                                    height: 50,
-                                  ),
-                                  // leading:  IconButton(color: Colors.green, onPressed:(){}, icon: const Icon(Icons.calendar_today_sharp),),
-                                  trailing: IconButton(
-                                    onPressed: () => _removeItemList(index),
-                                    icon: const Icon(
-                                        Icons.delete_forever_rounded),
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ),
-                              background: Container(
-                                  child:
-                                      const Icon(Icons.arrow_forward_outlined),
-                                  color: Theme.of(context).backgroundColor),
-                              secondaryBackground: Container(
-                                child: const Icon(
-                                  Icons.arrow_back_outlined,
-                                  size: 25,
-                                ),
-                                color: Theme.of(context).backgroundColor,
-                              ),
-                            );
-                          }),
-                    ),
-                  ],
-                );
+                return bodyViewer(context);
             }
           }),
     );
+  }
+
+  Column bodyViewer(BuildContext context) {
+    return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  //custom icon
+
+                  Container(
+                    margin: const EdgeInsets.only(
+                      top: 30.0,
+                      bottom: 16.0,
+                      left: 16.0,
+                      right: 16.0,
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                            child: Text(
+                          _currentMonth,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24.0,
+                          ),
+                        )),
+                        OutlinedButton(
+                          child: Text(
+                            'Anterior',
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _targetDateTime = DateTime(_targetDateTime.year,
+                                  _targetDateTime.month - 1);
+                              _currentMonth =
+                                  DateFormat.yMMM().format(_targetDateTime);
+                            });
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Colors.transparent),
+                          ),
+                        ),
+                        OutlinedButton(
+                          child: Text('Seguinte',
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor)),
+                          onPressed: () {
+                            setState(
+                              () {
+                                _targetDateTime = DateTime(
+                                    _targetDateTime.year,
+                                    _targetDateTime.month + 1);
+                                _currentMonth =
+                                    DateFormat.yMMM().format(_targetDateTime);
+                              },
+                            );
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Colors.transparent),
+                          ),
+                        ),
+                      ],
+                    ),
+                    decoration: const BoxDecoration(
+                        border: Border(
+                            bottom:
+                                BorderSide(color: Colors.black, width: 1.2))),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 0),
+                      child: _calendarCarouselNoHeader,
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: Colors.black, width: 1.2))),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: _items.length,
+                        itemBuilder: (context, index) {
+                          final item = _items[index];
+                          return Dismissible(
+                            key: Key(item.content ?? json.encode(item)),
+                            onDismissed: (direction) {
+                              _removeItemList(index);
+                            },
+                            child: Card(
+                              color: Theme.of(context).cardColor,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 2),
+                              child: ListTile(
+                                title: Text(
+                                  DateFormat('dd/MM/yyyy').format(item.date),
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                                subtitle: Text(
+                                  item.content ?? '',
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                                leading: Image.asset(
+                                  'assets/image/openbox.png',
+                                  width: 50,
+                                  height: 50,
+                                ),
+                                // leading:  IconButton(color: Colors.green, onPressed:(){}, icon: const Icon(Icons.calendar_today_sharp),),
+                                trailing: IconButton(
+                                  onPressed: () => _removeItemList(index),
+                                  icon: const Icon(
+                                      Icons.delete_forever_rounded),
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                            background: Container(
+                                child:
+                                    const Icon(Icons.arrow_forward_outlined),
+                                color: Theme.of(context).backgroundColor),
+                            secondaryBackground: Container(
+                              child: const Icon(
+                                Icons.arrow_back_outlined,
+                                size: 25,
+                              ),
+                              color: Theme.of(context).backgroundColor,
+                            ),
+                          );
+                        }),
+                  ),
+                ],
+              );
   }
 
   void _removeItemList(int index) async {
@@ -354,6 +325,22 @@ class _CalendarState extends State<Calendar> with SingleTickerProviderStateMixin
     }
   }
 
+  Future<void> _addItemToListByDateTime(DateTime date) async {
+    final response = await showDialog(
+      context: context,
+      builder: (contextDialog) => CalendarAddByDateTime(selectedDay: date,),
+    );
+
+    if (response is CalendarItem) {
+      setState(() {
+        _items.add(response);
+        _markedDateMap.add(response.date, Event(date: response.date));
+      });
+
+      await _saveCurrentChanges();
+    }
+  }
+
   Future _load() async {
     await Future.delayed(const Duration(microseconds: 1));
     var prefs = await SharedPreferences.getInstance();
@@ -361,8 +348,6 @@ class _CalendarState extends State<Calendar> with SingleTickerProviderStateMixin
 
     if (calendarItemStringList != null) {
       List<CalendarItem> result = CalendarItem.decode(calendarItemStringList);
-
-      print('result: ${result}');
 
       setState(() {
         _items = result;

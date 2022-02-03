@@ -3,14 +3,18 @@ import 'package:intl/intl.dart';
 import 'package:to_do_list/database/calendar_items.dart';
 import 'package:to_do_list/models/ultilits/inputs/input.dart';
 
-class CalendarAdd extends StatefulWidget {
-  const CalendarAdd({Key? key}) : super(key: key);
+class CalendarAddByDateTime extends StatefulWidget {
+  final DateTime selectedDay;
+
+  const CalendarAddByDateTime({Key? key,
+    required this.selectedDay,
+  }) : super(key: key);
 
   @override
-  State<CalendarAdd> createState() => _CalendarAddState();
+  State<CalendarAddByDateTime> createState() => _CalendarAddByDateTimeState();
 }
 
-class _CalendarAddState extends State<CalendarAdd> {
+class _CalendarAddByDateTimeState extends State<CalendarAddByDateTime> {
   final _contentCtrl = TextEditingController();
   final keyboard = TextInputType.visiblePassword;
   DateTime selectedDate = DateTime.now();
@@ -19,6 +23,7 @@ class _CalendarAddState extends State<CalendarAdd> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Theme.of(context).cardColor,
       title: Text(
         'Adcionando um lembrete',
         style: TextStyle(color: Theme.of(context).primaryColor),
@@ -28,12 +33,12 @@ class _CalendarAddState extends State<CalendarAdd> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextButton(
-            onPressed: () => _selectDate(context),
+            onPressed: () {},
             style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: Colors.redAccent),
+              side: const BorderSide(color: Color.fromRGBO(0, 127, 255, 1),),
             ),
             child: Text(
-              DateFormat('dd/MM/yyyy').format(selectedDate),
+              DateFormat('dd/MM/yyyy').format(widget.selectedDay),
               style: TextStyle(color: Theme.of(context).primaryColor),
             ),
           ),
@@ -78,7 +83,6 @@ class _CalendarAddState extends State<CalendarAdd> {
           ),
         ),
       ],
-      backgroundColor: Theme.of(context).cardColor,
     );
   }
 
@@ -88,24 +92,9 @@ class _CalendarAddState extends State<CalendarAdd> {
     if (content.isNotEmpty) {
       final item = CalendarItem(
         content: content,
-        date: selectedDate,
+        date: widget.selectedDay,
       );
       Navigator.of(context).pop(item);
-    }
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2001, 8),
-      lastDate: DateTime(2101),
-    );
-
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
     }
   }
 }

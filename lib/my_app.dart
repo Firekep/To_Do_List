@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list/screens/principal_view.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'models/providers/app_theme.dart';
 
 class MyApp extends StatefulWidget {
