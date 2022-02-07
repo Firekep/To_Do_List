@@ -14,7 +14,7 @@ class AppTheme {
       disabledColor: Colors.grey,// Calendar circle border
       shadowColor: const Color.fromRGBO(155, 22, 61, 1),//used to button theme
       focusColor: Colors.transparent,//Focus
-      iconTheme: const IconThemeData(color: Colors.white),//Icon Color
+      // iconTheme: const IconThemeData(color: Colors.white),//Icon Color
       primaryColor: Colors.black,//Font Color
       scaffoldBackgroundColor: Colors.white,//Background Color
       colorScheme: ColorScheme.fromSwatch().copyWith(

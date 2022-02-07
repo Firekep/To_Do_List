@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do_list/database/calendar_items.dart';
+import 'package:to_do_list/models/ultilits/Spacement/spacement.dart';
 import 'package:to_do_list/models/ultilits/inputs/input.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 
 class CalendarAdd extends StatefulWidget {
   const CalendarAdd({Key? key}) : super(key: key);
@@ -15,6 +17,24 @@ class _CalendarAddState extends State<CalendarAdd> {
   final keyboard = TextInputType.visiblePassword;
   DateTime selectedDate = DateTime.now();
   final myController = TextEditingController();
+  IconData? _icon;
+  bool _validate = false;
+
+  getIconTitle() {
+    if (_icon == null) {
+      return const Icon(Icons.arrow_circle_down_rounded);
+    } else {
+      return Icon(_icon,);
+    }
+  }
+
+  getIconTitleCondition() {
+    if (_icon == null) {
+      return const Text('Selecione um icone:',style: TextStyle(fontSize: 18),);
+    } else {
+      return const Text('Icone selecionado:',style: TextStyle(fontSize: 18),);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +47,50 @@ class _CalendarAddState extends State<CalendarAdd> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextButton(
-            onPressed: () => _selectDate(context),
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: Colors.redAccent),
-            ),
-            child: Text(
-              DateFormat('dd/MM/yyyy').format(selectedDate),
-              style: TextStyle(color: Theme.of(context).primaryColor),
-            ),
+          Row(
+            children: [
+              const Text('Data selecionada:', style: TextStyle(fontSize: 18),),
+              const SizedBox(width: 15,),
+              TextButton(
+                onPressed: () => _selectDate(context),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Colors.redAccent),
+                ),
+                child: Text(
+                  DateFormat('dd/MM/yyyy').format(selectedDate),
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+              ),
+            ],
           ),
+          Row(
+            children: [
+              getIconTitleCondition(),
+              TextButton(
+                onPressed: () {
+                  _pickIcon();
+                },
+                child: getIconTitle(),
+              ),
+            ],
+          ),
+          const Spacement(height: 15,),
           Input(
             label: 'Descrição:',
             controller: _contentCtrl,
+          ),
+          Visibility(
+            child: const Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: Text(
+                'Os campos devem ser preenchidos!',
+                style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 13
+                ),
+              ),
+            ),
+            visible: _validate,
           ),
         ],
       ),
@@ -57,7 +108,7 @@ class _CalendarAddState extends State<CalendarAdd> {
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: Colors.transparent),
               ),
-            ),
+            ),//Botão de cancelar
             OutlinedButton(
               onPressed: () => _submit(),
               child: const Text(
@@ -67,14 +118,14 @@ class _CalendarAddState extends State<CalendarAdd> {
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: Colors.transparent),
               ),
-            ),
+            ),//Botão de Salvar
           ],
         ),
         Center(
           child: Image.asset(
             'assets/image/present.gif',
-            width: 150,
-            height: 150,
+            width: 100,
+            height: 100,
           ),
         ),
       ],
@@ -82,15 +133,39 @@ class _CalendarAddState extends State<CalendarAdd> {
     );
   }
 
+  Future<void> _pickIcon() async {
+    IconData? icon = await FlutterIconPicker.showIconPicker(
+      context,
+      iconPackModes: [IconPack.material],
+    );
+
+    if (icon != null) {
+      _icon = icon;
+
+      setState(() {
+        debugPrint('Picked Icon: ${icon.codePoint} Picked Icon:${icon.fontFamily} Picked Icon:${icon.fontPackage}');
+      });
+    }
+  }
+
   void _submit() {
+    setState(() {
+      _validate = false;
+    });
+
     final content = _contentCtrl.text;
 
     if (content.isNotEmpty) {
       final item = CalendarItem(
-        content: content,
-        date: selectedDate,
+          content: content,
+          date: selectedDate,
+          iconCodePoint: _icon?.codePoint,
       );
       Navigator.of(context).pop(item);
+    } else {
+      setState(() {
+        _validate = true;
+      });
     }
   }
 

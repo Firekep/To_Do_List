@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do_list/database/calendar_items.dart';
 import 'package:to_do_list/models/ultilits/inputs/input.dart';
@@ -19,6 +20,16 @@ class _CalendarAddByDateTimeState extends State<CalendarAddByDateTime> {
   final keyboard = TextInputType.visiblePassword;
   DateTime selectedDate = DateTime.now();
   final myController = TextEditingController();
+  IconData? _icon;
+  bool _validate = false;
+
+  getIconTitle() {
+    if (_icon == null) {
+      return const Text('Selecione um icone');
+    } else {
+      return Icon(_icon, color: Colors.red);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +53,31 @@ class _CalendarAddByDateTimeState extends State<CalendarAddByDateTime> {
               style: TextStyle(color: Theme.of(context).primaryColor),
             ),
           ),
+          Flexible(
+            flex: 1,
+            child: TextButton(
+              onPressed: () {
+                _pickIcon();
+              },
+              child: getIconTitle(),
+            ),
+          ),
           Input(
             label: 'Descrição:',
             controller: _contentCtrl,
+          ),
+          Visibility(
+            child: const Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: Text(
+                'Os campos devem ser preenchidos!',
+                style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 13
+                ),
+              ),
+            ),
+            visible: _validate,
           ),
         ],
       ),
@@ -86,15 +119,39 @@ class _CalendarAddByDateTimeState extends State<CalendarAddByDateTime> {
     );
   }
 
+  Future<void> _pickIcon() async {
+    IconData? icon = await FlutterIconPicker.showIconPicker(
+      context,
+      iconPackModes: [IconPack.material],
+    );
+
+    if (icon != null) {
+      _icon = icon;
+
+      setState(() {
+        debugPrint('Picked Icon: ${icon.codePoint}');
+      });
+    }
+  }
+
   void _submit() {
+    setState(() {
+      _validate = false;
+    });
+
     final content = _contentCtrl.text;
 
     if (content.isNotEmpty) {
       final item = CalendarItem(
         content: content,
         date: widget.selectedDay,
+        iconCodePoint: _icon?.codePoint,
       );
       Navigator.of(context).pop(item);
+    } else {
+      setState(() {
+        _validate = true;
+      });
     }
   }
 }

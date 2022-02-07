@@ -29,6 +29,7 @@ class FloatingButton extends StatelessWidget {
               fillColor: Theme.of(context).shadowColor,
               child: const Icon(
                 Icons.info_outline,
+                color: Colors.white,
                 size: 35.0,
               ),
               padding: const EdgeInsets.all(15.0),
@@ -43,6 +44,7 @@ class FloatingButton extends StatelessWidget {
               child: const Icon(
                 Icons.add,
                 size: 35.0,
+                  color: Colors.white,
               ),
               padding: const EdgeInsets.all(15.0),
               shape: const CircleBorder(),
@@ -55,7 +57,7 @@ class FloatingButton extends StatelessWidget {
               elevation: 2.0,
               child: const Icon(
                 Icons.delete,
-                size: 35.0,
+                size: 35.0, color: Colors.white,
               ),
               padding: const EdgeInsets.all(15.0),
               shape: const CircleBorder(),
