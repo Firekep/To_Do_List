@@ -4,7 +4,7 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 3.0.0+5
+version: 3.1.5+0
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -15,7 +15,6 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  shared_preferences: ^2.0.12
   auto_size_text: ^3.0.0
   math_expressions: ^2.3.0
   get: ^4.6.1
@@ -25,9 +24,15 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   favorite_button: ^0.0.4
-  rainbow_color: ^2.0.1
   flutter_iconpicker: ^3.1.2
-
+  simple_speed_dial: ^0.1.3
+  fab_circular_menu: ^1.0.2
+  animated_floating_buttons: ^0.0.2
+  hawk_fab_menu: ^1.1.1
+  fluttertoast: ^8.0.8
+  material_dialogs: ^0.1.4
+  convex_bottom_bar: ^3.0.0
+  shared_preferences: ^2.0.13
 
 
 dev_dependencies:
@@ -42,7 +47,6 @@ flutter_icons:
   image_path: assets/image/icon.jpeg
   android: true
 
-
 flutter:
   assets:
     - assets/image/main.png
@@ -50,10 +54,22 @@ flutter:
     - assets/image/present.gif
     - assets/image/interrogation.png
     - assets/image/moon.png
-    - assets/image/space.png
     - assets/image/space1.jpg
     - assets/image/space3.png
+    - assets/image/space2.png
     - assets/image/Retro-Block-Question-icon.png
+    - assets/image/EditScreen.png
+    - assets/image/sun.png
 
   uses-material-design: true
+
+  fonts:
+    - family: AlegreyaSans
+      fonts:
+        - asset: assets/fonts/AlegreyaSans-Regular.ttf
+        - asset: assets/fonts/AlegreyaSans-Italic.ttf
+          style: italic
+        - asset: assets/fonts/AlegreyaSans-Bold.ttf
+          weight: 700
+
 

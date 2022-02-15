@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:to_do_list/screens/principal_view.dart';
+import 'package:to_do_list/screens/geral_view/principal_view.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'models/providers/app_theme.dart';
 
@@ -20,6 +20,12 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     _load();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _load();
+    super.didChangeDependencies();
   }
 
   @override
